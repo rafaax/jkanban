@@ -118,8 +118,39 @@ async function fetchDesenvolvimento() {
   }
 }
 
-function postData(){
+function postData(id, target, source){
 
+  var json = {
+    task_id: id,
+    target: target, 
+    source: source
+  };
+  json = JSON.stringify(json);
+
+  $.ajax({
+        type: "POST",
+        url: 'src/postData.php',
+        data: json,
+        contentType: "application/json",
+        success: function(response) {
+            console.log(response);
+            var response = JSON.parse(response);
+            console.log(response.erro);
+            // try {
+            //     var parsedResponse = JSON.parse(response);
+
+            //     if (Array.isArray(parsedResponse)) {
+            //         resolve(parsedResponse);
+            //     }
+
+            // } catch (error) {
+            //     reject(error);
+            // }
+        },
+        error: function(xhr, status, error) {
+            reject(error);
+        }
+    });
 }
 
 var pendenciasData = [];
@@ -140,14 +171,12 @@ async function initKanban() {
               enabled: true,
           },
           dropEl: function(el, target, source, sibling){
-
-              console.log(target.parentElement.getAttribute('data-id'));
+              // console.log(target.parentElement.getAttribute('data-id'));
               // console.log(el, target, source, sibling)
-              console.log(el.dataset);
-              console.log(el.dataset.prioridade);
-              console.log(el.dataset.task_id);
-
-
+              // console.log(el.dataset);
+              // console.log(el.dataset.prioridade);
+              // console.log(el.dataset.task_id);
+            postData(el.dataset.task_id, target.parentElement.getAttribute('data-id'), source.parentElement.getAttribute('data-id'));
           },
           buttonClick: function(el, boardId) {
               console.log(el);
@@ -179,23 +208,22 @@ async function initKanban() {
           },
           boards: [
               {
-                id: "_todo",
+                id: "tarefas_todo",
                 title: "Pendencias",
                 class: "info,good",
                 dragTo: ["_working"],
                 item: pendenciasData
               },
               {
-                id: "_working",
+                id: "tarefas_process",
                 title: "Em desenvolvimento",
                 class: "warning",
                 item: desenvolvimentoData,
               },
               {
-                id: "_done",
+                id: "tarefas_done",
                 title: "Feitos",
                 class: "success",
-                dragTo: ["_working"],
                 item: [
                   {
                     "id"      : "item-id-1",
