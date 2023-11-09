@@ -239,7 +239,7 @@ async function initKanban() {
           },
           itemAddOptions: {
               enabled: true,
-              content: '+ Add New Card',
+              content: '+ Adicionar novo registro',
               class: 'custom-button',
               footer: true
           },
