@@ -13,15 +13,15 @@
   </head>
   <body>
     <div id="myKanban"></div>
-    <button id="addDefault" class="custom-button">Add "Default" board</button>
-    <br />
+    <!-- <button id="addDefault" class="custom-button">Add "Default" board</button> -->
+    <!-- <br />
     <button id="addToDo" class="custom-button">Add element in "To Do" Board</button>
     <br />
     <button id="addToDoAtPosition" class="custom-button">Add element in "To Do" Board at position 2</button>
     <br />
     <button id="removeBoard" class="custom-button">Remove "Done" Board</button>
     <br />
-    <button id="removeElement" class="custom-button">Remove "My Task Test"</button>
+    <button id="removeElement" class="custom-button">Remove "My Task Test"</button> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="assets/dist/jkanban.js"></script>

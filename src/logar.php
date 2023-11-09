@@ -27,7 +27,7 @@ if($totalRetornado == 1){
             $sql = "UPDATE usuarios SET auth_token = '$token' where id = $idDb";
             $query = mysqli_query($conexao, $sql);
 
-            header("Location: ../index.php"); 
+            header("Location: ../index.php?id=" . $array['id']); 
         } else{
             header("Location: ../login?dadosInvalidos="); 
         }
