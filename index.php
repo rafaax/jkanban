@@ -30,43 +30,35 @@
 
 <script>
 
-
-
 function get_pendencias(user) {
-    return new Promise(function(resolve, reject) {
-        var jsonPost = {
-            user_id: user
-        };
+  return new Promise(function(resolve, reject) {
+    var jsonPost = {
+      user_id: user
+    };
+    $.ajax({
+        type: "POST",
+        url: 'src/to_do.php',
+        data: JSON.stringify(jsonPost),
+        contentType: "application/json",
+        success: function(response) {
+            // console.log(response);
+            try {
+                var parsedResponse = JSON.parse(response);
 
-        $.ajax({
-            type: "POST",
-            url: 'src/to_do.php',
-            data: JSON.stringify(jsonPost),
-            contentType: "application/json",
-            success: function(response) {
-                // console.log(response);
-                try {
-                    var parsedResponse = JSON.parse(response);
-
-                    // Verifica se o resultado é um array
-                    if (Array.isArray(parsedResponse)) {
-                        resolve(parsedResponse);
-                    } else {
-                        var itemJson = parsedResponse.map(function(title) {
-                            return { title: title };
-                        });
-
-                        resolve(itemJson);
-                    }
-                } catch (error) {
-                    reject(error);
-                }
-            },
-            error: function(xhr, status, error) {
+                if (Array.isArray(parsedResponse)) {
+                    resolve(parsedResponse);
+                }else{
+                  
+                } 
+            } catch (error) {
                 reject(error);
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            reject(error);
+        }
     });
+  });
 }
 
 async function fetchData() {
@@ -79,19 +71,8 @@ async function fetchData() {
     }
 }
 
-var itemJson = [
-    {
-        title: "item"
-    },
-    {
-        title: "item 2"
-    },
-    {
-        title: "item 3"
-    },
-];
-
 var pendenciasData = [];
+var desenvolvimentoData = [];
 
 async function fetchDataAndInitializeKanban() {
     try{
@@ -107,6 +88,7 @@ async function fetchDataAndInitializeKanban() {
               enabled: true,
           },
           dropEl: function(el, target, source, sibling){
+
               console.log(target.parentElement.getAttribute('data-id'));
               // console.log(el, target, source, sibling)
               console.log(el.dataset.eid);
@@ -153,7 +135,7 @@ async function fetchDataAndInitializeKanban() {
                 id: "_working",
                 title: "Em desenvolvimento",
                 class: "warning",
-                item: itemJson // vindo do array - teste
+                item: desenvolvimentoData,
               },
               {
                 id: "_done",
