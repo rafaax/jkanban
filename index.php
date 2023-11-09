@@ -25,10 +25,19 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="assets/dist/jkanban.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>
 
 <script>
+
+function alertaAdm(){
+  Swal.fire({
+    title: "Cuidado!",
+    text: "Como administrador você pode adicionar tarefas à outro usuário que não seja você!",
+    icon: "warning"
+  });
+}
 
 function get_pendencias(user) {
   return new Promise(function(resolve, reject) {
@@ -41,15 +50,13 @@ function get_pendencias(user) {
         data: JSON.stringify(jsonPost),
         contentType: "application/json",
         success: function(response) {
-            // console.log(response);
+            console.log(response);
             try {
                 var parsedResponse = JSON.parse(response);
 
                 if (Array.isArray(parsedResponse)) {
                     resolve(parsedResponse);
-                }else{
-                  
-                } 
+                }
             } catch (error) {
                 reject(error);
             }
@@ -61,22 +68,63 @@ function get_pendencias(user) {
   });
 }
 
-async function fetchData() {
-    try {
-        var pendencias = await get_pendencias(<?=$_GET['id']?>);
-        console.log(pendencias)
-        return pendencias;
-    } catch (error) {
-        console.error("Erro:", error);
-    }
+function get_desenvolvimento(user) {
+  return new Promise(function(resolve, reject) {
+    var jsonPost = {
+      user_id: user
+    };
+    $.ajax({
+        type: "POST",
+        url: 'src/in_progress.php',
+        data: JSON.stringify(jsonPost),
+        contentType: "application/json",
+        success: function(response) {
+            console.log(response);
+            try {
+                var parsedResponse = JSON.parse(response);
+
+                if (Array.isArray(parsedResponse)) {
+                    resolve(parsedResponse);
+                }
+
+            } catch (error) {
+                reject(error);
+            }
+        },
+        error: function(xhr, status, error) {
+            reject(error);
+        }
+    });
+  });
+}
+
+async function fetchPendencias() {
+  try {
+      var pendencias = await get_pendencias(<?=$_GET['id']?>);
+      console.log(pendencias)
+      return pendencias;
+  } catch (error) {
+      console.error("Erro:", error);
+  }
+}
+
+async function fetchDesenvolvimento() {
+  try {
+      var pendencias = await get_desenvolvimento(<?=$_GET['id']?>);
+      console.log(pendencias)
+      return pendencias;
+  } catch (error) {
+      console.error("Erro:", error);
+  }
 }
 
 var pendenciasData = [];
 var desenvolvimentoData = [];
 
-async function fetchDataAndInitializeKanban() {
+async function initKanban() {
     try{
-        pendenciasData = await fetchData();
+        pendenciasData = await fetchPendencias();
+        desenvolvimentoData = await fetchDesenvolvimento();
         // console.log(pendenciasData); - resultado post das pendencias
 
         var KanbanTest = new jKanban({
@@ -166,12 +214,15 @@ async function fetchDataAndInitializeKanban() {
 
 <?php 
 if($usuarioSession == $_GET['id']){ 
-  echo 'fetchDataAndInitializeKanban();';
+  echo 'initKanban();';
 }else{ 
-  if($permissoesSession == 1){
-      echo 'fetchDataAndInitializeKanban();';
+  if($permissoesSession == 1 && $usuarioSession == $_GET['id']){
+      echo 'initKanban();';
+  }else if($permissoesSession == 1 && $usuarioSession != $_GET['id']){
+    echo 'initKanban();';
+    echo 'alertaAdm();';
   }else{
-    echo "window.location.replace('index.php?id=$usuarioSession')";
+    echo "window.location.replace('index?id=$usuarioSession')";
   }
 }
 ?>

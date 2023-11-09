@@ -7,17 +7,19 @@ file_put_contents('log.txt', file_get_contents("php://input"));
 $user = $json->user_id;
 
 
-$sql = "SELECT * from tarefas_todo where usuario_tarefa = '$user'";
+$sql = "SELECT td.tarefa_id, tc.titulo, tc.prioridade from tarefas_todo td
+        inner join tarefas_criadas tc on tc.tarefa_id = td.tarefa_id
+            where tc.usuario_tarefa = '$user'";
+
 $query = mysqli_query($conexao, $sql);
 
 $tarefas = [];
 
 while($array = mysqli_fetch_array($query)){
-    
     $tarefas[] = [
         'title' => $array['titulo'],
-        'task' => $array['tarefa'],
-        'id' => $array['id']
+        'task_id' => $array['tarefa_id'],
+        'prioridade' => $array['prioridade']
     ];
 }
 
