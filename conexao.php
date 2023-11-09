@@ -1,0 +1,1 @@
+<?php $conexao = mysqli_connect('localhost', 'root', '', 'engeline_kanban'); ?>

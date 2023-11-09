@@ -1,5 +1,5 @@
 <?php
-require 'funcoes/conexao.php';
+require 'conexao.php';
 if (isset($_COOKIE['auth_token'])) {
 
     $auth_token = $_COOKIE['auth_token'];
@@ -12,7 +12,7 @@ if (isset($_COOKIE['auth_token'])) {
         if($auth_token === $_COOKIE['auth_token']){
             session_start();
             $_SESSION['usuario'] = $array['id'];
-            header("Location: http://127.0.0.1/estudos-rapha/jkanban-master/example/");
+            header("Location: http://127.0.0.1/jkanban/index");
             die();
         }
     }
@@ -25,14 +25,11 @@ if (isset($_COOKIE['auth_token'])) {
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link rel="stylesheet" href="assets/css/bootstrap.css">
 <link rel="stylesheet" href="assets/css/style.css">
-<title>Calendario Engedoc</title>
+<title>Login</title>
 </head>
 <body>
 <div id="particles-js">
     <div class="container tamanho-largura">
-        <div class="d-flex justify-content-center">
-          <img src="assets/img/Logo-Vetorian-Simbolo-Color.png" width="125px" height="125px" alt="Vetorian">
-        </div>
         <form action="funcoes/usuario/logar.php" method="POST">
         <div class="form-group">
             <label>Login</label>

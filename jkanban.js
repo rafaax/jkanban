@@ -1,12 +1,3 @@
-/**
- * jKanban
- * Vanilla Javascript plugin for manage kanban boards
- *
- * @site: http://www.riccardotartaglia.it/jkanban/
- * @author: Riccardo Tartaglia
- */
-
-//Require dragula
 var dragula = require('dragula');
 
 (function () {
