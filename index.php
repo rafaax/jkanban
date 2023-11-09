@@ -50,7 +50,7 @@ function get_pendencias(user) {
         data: JSON.stringify(jsonPost),
         contentType: "application/json",
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             try {
                 var parsedResponse = JSON.parse(response);
 
@@ -79,7 +79,7 @@ function get_desenvolvimento(user) {
         data: JSON.stringify(jsonPost),
         contentType: "application/json",
         success: function(response) {
-            console.log(response);
+            // console.log(response);
             try {
                 var parsedResponse = JSON.parse(response);
 
@@ -101,7 +101,7 @@ function get_desenvolvimento(user) {
 async function fetchPendencias() {
   try {
       var pendencias = await get_pendencias(<?=$_GET['id']?>);
-      console.log(pendencias)
+      // console.log(pendencias)
       return pendencias;
   } catch (error) {
       console.error("Erro:", error);
@@ -111,11 +111,15 @@ async function fetchPendencias() {
 async function fetchDesenvolvimento() {
   try {
       var pendencias = await get_desenvolvimento(<?=$_GET['id']?>);
-      console.log(pendencias)
+      // console.log(pendencias)
       return pendencias;
   } catch (error) {
       console.error("Erro:", error);
   }
+}
+
+function postData(){
+
 }
 
 var pendenciasData = [];
@@ -139,8 +143,10 @@ async function initKanban() {
 
               console.log(target.parentElement.getAttribute('data-id'));
               // console.log(el, target, source, sibling)
-              console.log(el.dataset.eid);
-              console.log(el.dataset.task);
+              console.log(el.dataset);
+              console.log(el.dataset.prioridade);
+              console.log(el.dataset.task_id);
+
 
           },
           buttonClick: function(el, boardId) {
