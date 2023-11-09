@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Kanban</title>
-    <link rel="stylesheet" href="../dist/jkanban.min.css" />
+    <link rel="stylesheet" href="assets/dist/jkanban.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/stylekanban.css"/>
 
@@ -24,7 +24,7 @@
     <button id="removeElement" class="custom-button">Remove "My Task Test"</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="../dist/jkanban.js"></script>
+    <script src="assets/dist/jkanban.js"></script>
   </body>
 </html>
 
@@ -40,7 +40,7 @@ function get_pendencias(user) {
 
         $.ajax({
             type: "POST",
-            url: 'php/to_do.php',
+            url: 'src/to_do.php',
             data: JSON.stringify(jsonPost),
             contentType: "application/json",
             success: function(response) {
