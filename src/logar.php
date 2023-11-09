@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once '../conexao.php';
+include_once 'conexao.php';
 
 $emailUsuario = trim($_POST['usuario']);
 $senhaDigitada = trim($_POST['senha']);
@@ -11,10 +11,10 @@ $retornoEmailUsuario = mysqli_query($conexao,$sql);
 $totalRetornado = mysqli_num_rows($retornoEmailUsuario);
 
 if($totalRetornado == 0){
-    header("Location: ../../login?semCadastro=".$emailUsuario); 
+    header("Location: ../login?semCadastro=".$emailUsuario); 
 }
 if($totalRetornado >= 2){
-    header("Location: ../../login?emailCadastrado=".$emailUsuario); 
+    header("Location: ../login?emailCadastrado=".$emailUsuario); 
 }
 if($totalRetornado == 1){
     while($array = mysqli_fetch_array($retornoEmailUsuario,MYSQLI_ASSOC)){
@@ -29,7 +29,7 @@ if($totalRetornado == 1){
 
             header("Location: ../../example/"); 
         } else{
-            header("Location: ../../login.php?dadosInvalidos="); 
+            header("Location: ../login.php?dadosInvalidos="); 
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include_once '../funcoes/conexao.php';
+include_once 'conexao.php';
 
 if ($_SESSION["usuario"] == "" || $_SESSION["usuario"] == null) {
     header("Location: http://127.0.0.1/estudos-rapha/jkanban-master/login.php");

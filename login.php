@@ -1,5 +1,5 @@
 <?php
-require 'conexao.php';
+require 'src/conexao.php';
 if (isset($_COOKIE['auth_token'])) {
 
     $auth_token = $_COOKIE['auth_token'];
