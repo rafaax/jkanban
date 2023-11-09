@@ -30,7 +30,7 @@ if (isset($_COOKIE['auth_token'])) {
 <body>
 <div id="particles-js">
     <div class="container tamanho-largura">
-        <form action="funcoes/usuario/logar.php" method="POST">
+        <form action="src/logar.php" method="POST">
         <div class="form-group">
             <label>Login</label>
             <input class="form-control" type="text" name="usuario" placeholder="Digite o e-mail ou login do usuário"
