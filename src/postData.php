@@ -34,11 +34,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(validaRegistro($json->task_id, $json->source)){
         
-        $sql = "INSERT INTO ";
+        $sql = "INSERT INTO $json->target('tarefa_id') values ('$json->task_id') ";
         if(mysqli_query($conexao, $sql)){
+            $sql = "DELETE from $json->source where tarefa_id = '$json->task_id'";
+            $query = mysqli_query($conexao, $sql);
+            return $query ? retorna(false, 'sem erro') : retorna(true, 'Ocorreu algum erro...');
 
         }else{
-            retorna(true,'');
+            retorna(true,'Ocorreu algum erro...');
         }
     }else{
         retorna(true, 'Ocorreu um erro ao encontrar o registro');
