@@ -98,10 +98,36 @@ function get_desenvolvimento(user) {
   });
 }
 
+function get_concluidos(user) {
+  return new Promise(function(resolve, reject) {
+    var jsonPost = {
+      user_id: user
+    };
+    $.ajax({
+        type: "POST",
+        url: 'src/done.php',
+        data: JSON.stringify(jsonPost),
+        contentType: "application/json",
+        success: function(response) {
+            console.log(response);
+            try {
+                var parsedResponse = JSON.parse(response);
+                if (Array.isArray(parsedResponse)) {
+                    resolve(parsedResponse);
+                }
+            } catch (error) {
+                reject(error);
+            }
+        },
+        error: function(xhr, status, error) {
+            reject(error);
+        }
+    });
+  });
+}
 async function fetchPendencias() {
   try {
       var pendencias = await get_pendencias(<?=$_GET['id']?>);
-      // console.log(pendencias)
       return pendencias;
   } catch (error) {
       console.error("Erro:", error);
@@ -110,9 +136,17 @@ async function fetchPendencias() {
 
 async function fetchDesenvolvimento() {
   try {
-      var pendencias = await get_desenvolvimento(<?=$_GET['id']?>);
-      // console.log(pendencias)
-      return pendencias;
+      var in_progress = await get_desenvolvimento(<?=$_GET['id']?>);
+      return in_progress;
+  } catch (error) {
+      console.error("Erro:", error);
+  }
+}
+
+async function fetchFeitos() {
+  try {
+      var feitos = await get_concluidos(<?=$_GET['id']?>);
+      return feitos;
   } catch (error) {
       console.error("Erro:", error);
   }
@@ -136,16 +170,9 @@ function postData(id, target, source){
             console.log(response);
             var response = JSON.parse(response);
             console.log(response.erro);
-            // try {
-            //     var parsedResponse = JSON.parse(response);
-
-            //     if (Array.isArray(parsedResponse)) {
-            //         resolve(parsedResponse);
-            //     }
-
-            // } catch (error) {
-            //     reject(error);
-            // }
+            if(response.erro == false){
+              // initKanban();
+            }
         },
         error: function(xhr, status, error) {
             reject(error);
@@ -155,11 +182,13 @@ function postData(id, target, source){
 
 var pendenciasData = [];
 var desenvolvimentoData = [];
+var concluidosData = [];
 
 async function initKanban() {
     try{
         pendenciasData = await fetchPendencias();
         desenvolvimentoData = await fetchDesenvolvimento();
+        concluidosData = await fetchFeitos();
         // console.log(pendenciasData); - resultado post das pendencias
 
         var KanbanTest = new jKanban({
@@ -171,12 +200,20 @@ async function initKanban() {
               enabled: true,
           },
           dropEl: function(el, target, source, sibling){
+            var taskId = el.dataset.task_id;
+            var targetPost = target.parentElement.getAttribute('data-id');
+            var sourcePost = source.parentElement.getAttribute('data-id');
               // console.log(target.parentElement.getAttribute('data-id'));
               // console.log(el, target, source, sibling)
               // console.log(el.dataset);
               // console.log(el.dataset.prioridade);
               // console.log(el.dataset.task_id);
-            postData(el.dataset.task_id, target.parentElement.getAttribute('data-id'), source.parentElement.getAttribute('data-id'));
+            if(targetPost == 'tarefas_done' && sourcePost == 'tarefas_todo'){
+              return false;
+            }else{
+              postData(taskId, targetPost, sourcePost);  
+            }
+            
           },
           buttonClick: function(el, boardId) {
               console.log(el);
@@ -211,7 +248,7 @@ async function initKanban() {
                 id: "tarefas_todo",
                 title: "Pendencias",
                 class: "info,good",
-                dragTo: ["_working"],
+                dragTo: ["tarefas_process"],
                 item: pendenciasData
               },
               {
@@ -224,18 +261,7 @@ async function initKanban() {
                 id: "tarefas_done",
                 title: "Feitos",
                 class: "success",
-                item: [
-                  {
-                    "id"      : "item-id-1",
-                    "title"   : "Item 1",
-                    "username": "username1"
-                  },
-                  {
-                    "id"      : "item-id-2",
-                    "title"   : "Item 2",
-                    "username": "username2"
-                  }
-                ]
+                item: concluidosData
               }
           ],
           dragBoards: false
