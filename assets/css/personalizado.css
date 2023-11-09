@@ -1,0 +1,168 @@
+/* @import url('https://fonts.cdnfonts.com/css/montserrat'); */
+@import url('https://fonts.cdnfonts.com/css/gotham-6');
+
+body {
+    margin: 0px;
+    padding: 0;
+    /* font-family: 'Montserrat', sans-serif; */
+    font-family: 'Gotham Black', sans-serif;
+    font-size: 17px;
+    background-color: #fcf7f7;
+    line-height: 1.5;
+}
+
+#calendar {
+    width: 60%;
+    /* padding-right: 100px; */
+    position: relative;
+    /* display: flex; */
+    
+}
+.visevent{
+    display: block;
+}
+.formedit{
+    display: none;
+}
+
+
+.principal
+{
+    /* position: relative; */
+    display: flex;
+}
+
+.logos
+{
+    display: flex;
+    padding: 10px;
+}
+
+.back
+{
+    opacity: 0.5;
+    width: 60px;
+}
+
+.back:hover
+{
+    transition: width 0.5s;
+    width: 70px;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.overlay
+{
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+.engedoc_logo
+{
+    position: absolute;
+    margin-left: 8%;
+    width: 150px;
+}
+
+.iframe
+{
+    margin-top: 5%;
+    /* position: absolute; */
+    display: flex;
+    width: 30%; 
+    margin-bottom:20px;
+}
+
+.loading 
+{
+    width: 40px;
+}
+
+.select
+{
+    
+    position: absolute;
+    top: 500px;
+    /* right: 90%; */
+    padding: 10px;
+    /* width: 30%; */
+}
+
+#link-reuniao{
+    display: none;
+}
+
+#link-reuniao-edit{
+    display: none;
+}
+
+#recorrenteTipo{
+    display: none;
+}
+
+#recorrenteTipo-edit{
+    display: none;
+}
+
+#recorrenteValorSemana{
+    display: none;
+}
+
+#recorrenteValorMes{
+    display: none;
+}
+
+.navbar {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+}
+.navbar-brand {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+.logout
+{
+    width:85px; 
+    margin-bottom:20px;
+    
+}
+
+.logout:hover
+{
+    transition: width 0.5s;
+    width: 95px;
+    cursor: pointer;
+}
+
+.instalacao
+{
+    display: none;
+}
+
+.compromisso-recorrente
+{
+    display: block;
+}
+
+#produtos 
+{
+    display: none;
+}
+
+

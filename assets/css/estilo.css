@@ -1,0 +1,43 @@
+.btn-editar{
+    color: #fff !important;
+}
+
+.fixed{
+position: sticky;          
+top: 0;
+background-color: white;
+}
+
+.descricao {
+display: none;
+}
+
+#descricao {
+display:none;
+}
+
+.secundaria2
+{
+    margin-left: 38%;
+
+}
+
+.principal
+{
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+
+.secundaria1
+{
+    width: 50%;
+    align-self: start;
+}
+
+.paginacao
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
