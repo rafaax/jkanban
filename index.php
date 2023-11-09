@@ -1,14 +1,14 @@
-<?php include 'validacao.php'; ?>
+<?php include 'src/validacao.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Engeline Kanban</title>
+    <title>Kanban</title>
     <link rel="stylesheet" href="../dist/jkanban.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="assets/css/stylekanban.css"/>
 
   </head>
   <body>

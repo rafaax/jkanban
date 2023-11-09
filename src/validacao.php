@@ -4,7 +4,7 @@ session_start();
 include_once 'conexao.php';
 
 if ($_SESSION["usuario"] == "" || $_SESSION["usuario"] == null) {
-    header("Location: http://127.0.0.1/estudos-rapha/jkanban-master/login.php");
+    header("Location: http://127.0.0.1/jkanban/login.php");
 }
 
 $usuarioLogado = $_SESSION["usuario"];
