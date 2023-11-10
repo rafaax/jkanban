@@ -12,7 +12,7 @@ if (isset($_COOKIE['auth_token'])) {
         if($auth_token === $_COOKIE['auth_token']){
             session_start();
             $_SESSION['usuario'] = $array['id'];
-            header("Location: http://192.168.0.109/jkanban/index?id=" . $_SESSION);
+            header("Location: http://192.168.0.109/jkanban/index?id=" . $_SESSION['usuario']);
             die();
         }
     }

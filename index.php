@@ -189,6 +189,7 @@ async function initKanban() {
         pendenciasData = await fetchPendencias();
         desenvolvimentoData = await fetchDesenvolvimento();
         concluidosData = await fetchFeitos();
+        // console.log(pendenciasData);
         // console.log(pendenciasData); - resultado post das pendencias
 
         var KanbanTest = new jKanban({
@@ -198,6 +199,9 @@ async function initKanban() {
           dragItems: false, 
           itemHandleOptions:{
               enabled: true,
+          },
+          click: function(el){
+            console.log(el.dataset.prioridade);
           },
           dropEl: function(el, target, source, sibling){
             var taskId = el.dataset.task_id;

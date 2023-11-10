@@ -16,8 +16,14 @@ $query = mysqli_query($conexao, $sql);
 $tarefas = [];
 
 while($array = mysqli_fetch_array($query)){
+    // if($array['prioridade'] == 'Urgente'){
+    //     $titulo = $array['titulo'] . '$<i class="fas fa-exclamation-triangle"></i>';
+    // }else{
+
+    // }
+
     $tarefas[] = [
-        'title' => $array['titulo'],
+        'title' => '<span style="background-color: red">' . $array['titulo'] . '</span>',
         'task_id' => $array['tarefa_id'],
         'prioridade' => $array['prioridade']
     ];
