@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/js/jkanban.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/stylekanban.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
 
   </head>
   <body>

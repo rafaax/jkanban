@@ -16,14 +16,14 @@ $query = mysqli_query($conexao, $sql);
 $tarefas = [];
 
 while($array = mysqli_fetch_array($query)){
-    // if($array['prioridade'] == 'Urgente'){
-    //     $titulo = $array['titulo'] . '$<i class="fas fa-exclamation-triangle"></i>';
-    // }else{
-
-    // }
+    if($array['prioridade'] == 'Urgente'){
+        $titulo = $array['titulo'] . ' <i class="fas fa-exclamation-triangle"></i>';
+    }else{
+        $titulo = $array['titulo'];
+    }
 
     $tarefas[] = [
-        'title' => '<span style="background-color: red">' . $array['titulo'] . '</span>',
+        'title' => $titulo,
         'task_id' => $array['tarefa_id'],
         'prioridade' => $array['prioridade']
     ];
