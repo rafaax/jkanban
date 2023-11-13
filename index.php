@@ -106,9 +106,7 @@ $(document).ready(function(){
 
   function get_pendencias(user) {
     return new Promise(function(resolve, reject) {
-      var jsonPost = {
-        user_id: user
-      };
+      var jsonPost = {user_id: user};
       $.ajax({
           type: "POST",
           url: 'src/to_do.php',
@@ -135,9 +133,7 @@ $(document).ready(function(){
 
   function get_desenvolvimento(user) {
     return new Promise(function(resolve, reject) {
-      var jsonPost = {
-        user_id: user
-      };
+      var jsonPost = {user_id: user};
       $.ajax({
           type: "POST",
           url: 'src/in_progress.php',
@@ -165,9 +161,7 @@ $(document).ready(function(){
 
   function get_concluidos(user) {
     return new Promise(function(resolve, reject) {
-      var jsonPost = {
-        user_id: user
-      };
+      var jsonPost = {user_id: user};
       $.ajax({
           type: "POST",
           url: 'src/done.php',
@@ -191,183 +185,118 @@ $(document).ready(function(){
     });
   }
 
-  <?php if(isset($_GET['id'])){
-    ?>
-    async function fetchPendencias() {
-      try {
-          var pendencias = await get_pendencias(<?=$_GET['id']?>);
-          return pendencias;
-      } catch (error) {
-          console.error("Erro:", error);
+  function postData(id, target, source){
+    var json = {task_id: id, target: target,source: source};
+    
+    $.ajax({
+      type: "POST",
+      url: 'src/postData.php',
+      data: JSON.stringify(json),
+      contentType: "application/json",
+      success: function(response) {
+        console.log(response);
+        var response = JSON.parse(response);
+        console.log(response.erro);
+        if(response.erro == false){
+          // ainda nao sei oq colocar aqui
+        }
       }
+    });
+  }
+
+
+  <?php if(isset($_GET['id'])){ ?>
+    async function fetchPendencias() {
+      var pendencias = await get_pendencias(<?=$_GET['id']?>);
+      return pendencias;
     }
 
     async function fetchDesenvolvimento() {
-      try {
-          var in_progress = await get_desenvolvimento(<?=$_GET['id']?>);
-          return in_progress;
-      } catch (error) {
-          console.error("Erro:", error);
-      }
+      var in_progress = await get_desenvolvimento(<?=$_GET['id']?>);
+      return in_progress;
     }
 
     async function fetchFeitos() {
-      try {
-          var feitos = await get_concluidos(<?=$_GET['id']?>);
-          return feitos;
-      } catch (error) {
-          console.error("Erro:", error);
-      }
+      var feitos = await get_concluidos(<?=$_GET['id']?>);
+      return feitos;
     }
-    <?php 
-  }
-?>
+    <?php } ?>
 
-  function postData(id, target, source){
 
-    var json = {
-      task_id: id,
-      target: target, 
-      source: source
-    };
-    json = JSON.stringify(json);
+    async function initKanban() {
+      
+      var pendenciasData = [];
+      var desenvolvimentoData = [];
+      var concluidosData = [];
+      
+      pendenciasData = await fetchPendencias();
+      desenvolvimentoData = await fetchDesenvolvimento();
+      concluidosData = await fetchFeitos();
 
-    $.ajax({
-          type: "POST",
-          url: 'src/postData.php',
-          data: json,
-          contentType: "application/json",
-          success: function(response) {
-              console.log(response);
-              var response = JSON.parse(response);
-              console.log(response.erro);
-              if(response.erro == false){
-                // initKanban();
-              }
-          },
-          error: function(xhr, status, error) {
-              reject(error);
+      var KanbanTest = new jKanban({
+        element: "#myKanban",
+        gutter: "10px",
+        widthBoard: "450px",
+        itemHandleOptions:{
+            enabled: true,
+        },
+        click: function(el){
+          $('#visualizar').modal('show');
+          $('#visualizar #title').text(el.dataset.prioridade);
+          $('#visualizar #title').val(el.dataset.prioridade);
+          // console.log(el.dataset);
+        },
+        dropEl: function(el, target, source, sibling){
+          var taskId = el.dataset.task_id;
+          var targetPost = target.parentElement.getAttribute('data-id');
+          var sourcePost = source.parentElement.getAttribute('data-id');
+          // console.log(el.dataset);
+          if(targetPost == 'tarefas_done' && sourcePost == 'tarefas_todo'){
+            return false; // não deixa o usuário enviar para o backend se ele esta tentando 'cortar caminho'
+          }else{
+            postData(taskId, targetPost, sourcePost);  
           }
+        },
+        boards: [
+            {
+              id: "tarefas_todo",
+              title: "Pendencias",
+              class: "info,good",
+              dragTo: ["tarefas_process"],
+              item: pendenciasData
+            },
+            {
+              id: "tarefas_process",
+              title: "Em desenvolvimento",
+              class: "warning",
+              item: desenvolvimentoData,
+            },
+            {
+              id: "tarefas_done",
+              title: "Feitos",
+              class: "success",
+              item: concluidosData
+            }
+        ],
+        dragBoards: false
       });
-  }
-
-  var pendenciasData = [];
-  var desenvolvimentoData = [];
-  var concluidosData = [];
-
-  async function initKanban() {
-      try{
-          pendenciasData = await fetchPendencias();
-          desenvolvimentoData = await fetchDesenvolvimento();
-          concluidosData = await fetchFeitos();
-          // console.log(pendenciasData);
-          // console.log(pendenciasData); - resultado post das pendencias
-
-          var KanbanTest = new jKanban({
-            element: "#myKanban",
-            gutter: "10px",
-            widthBoard: "450px",
-            dragItems: false, 
-            itemHandleOptions:{
-                enabled: true,
-            },
-            click: function(el){
-              $('#visualizar').modal('show');
-              $('#visualizar #title').text(el.dataset.prioridade);
-              $('#visualizar #title').val(el.dataset.prioridade);
-              console.log(el.dataset.prioridade);
-            },
-            dropEl: function(el, target, source, sibling){
-              var taskId = el.dataset.task_id;
-              var targetPost = target.parentElement.getAttribute('data-id');
-              var sourcePost = source.parentElement.getAttribute('data-id');
-                // console.log(target.parentElement.getAttribute('data-id'));
-                // console.log(el, target, source, sibling)
-                // console.log(el.dataset);
-                // console.log(el.dataset.prioridade);
-                // console.log(el.dataset.task_id);
-              if(targetPost == 'tarefas_done' && sourcePost == 'tarefas_todo'){
-                return false;
-              }else{
-                postData(taskId, targetPost, sourcePost);  
-              }
-              
-            },
-            buttonClick: function(el, boardId) {
-                
-                console.log(el);
-                console.log(boardId);
-                // create a form to enter element
-                var formItem = document.createElement("form");
-                formItem.setAttribute("class", "itemform");
-                formItem.innerHTML =
-                '<div class="form-group"><textarea class="form-control" rows="2" autofocus></textarea></div><div class="form-group"><button type="submit" class="btn btn-primary btn-xs pull-right">Submit</button><button type="button" id="CancelBtn" class="btn btn-default btn-xs pull-right">Cancel</button></div>';
-
-                KanbanTest.addForm(boardId, formItem);
-                formItem.addEventListener("submit", function(e) {
-                  e.preventDefault();
-                  var text = e.target[0].value;
-                  KanbanTest.addElement(boardId, {
-                      title: text
-                  });
-                  formItem.parentNode.removeChild(formItem);
-                });
-                document.getElementById("CancelBtn").onclick = function() {
-                  formItem.parentNode.removeChild(formItem);
-                };
-            },
-            itemAddOptions: {
-                enabled: true,
-                content: '+ Adicionar novo registro',
-                class: 'custom-button',
-                footer: true
-            },
-            boards: [
-                {
-                  id: "tarefas_todo",
-                  title: "Pendencias",
-                  class: "info,good",
-                  dragTo: ["tarefas_process"],
-                  item: pendenciasData
-                },
-                {
-                  id: "tarefas_process",
-                  title: "Em desenvolvimento",
-                  class: "warning",
-                  item: desenvolvimentoData,
-                },
-                {
-                  id: "tarefas_done",
-                  title: "Feitos",
-                  class: "success",
-                  item: concluidosData
-                }
-            ],
-            dragBoards: false
-        });
-
-      } catch (error) {
-          console.error("Erro:", error);
-      }
-  }
+    }
 
   <?php 
   if(isset($_GET['id'])){
-    if($usuarioSession == $_GET['id']){ 
-      echo 'initKanban();';
+    if($usuarioSession === $_GET['id']){?>
+      initKanban();<?php
     }else{ 
-      if($permissoesSession == 1 && $usuarioSession == $_GET['id']){
-          echo 'initKanban();';
-      }else if($permissoesSession == 1 && $usuarioSession != $_GET['id']){
-        echo 'initKanban();';
-        echo 'alertaAdm();';
-      }else{
-        echo "window.location.replace('index?id=$usuarioSession')";
+      if($permissoesSession === 1 && $usuarioSession == $_GET['id']){?>
+          initKanban();<?php
+      }else if($permissoesSession === 1 && $usuarioSession != $_GET['id']){?>
+        initKanban();
+        alertaAdm();<?php
+      }else{?>
+        window.location.replace('index?id=$usuarioSession');<?php
       }
     }
-  }
-  
-  ?>
+  }?>
 
   $('.button').on("click", function(){
       Swal.fire({
@@ -394,15 +323,13 @@ $(document).ready(function(){
               setTimeout(function() {
                   window.location.href = "index?cadastro";
               }, 200)
-              
           }
         })
     });
-
+    
     $('.btn-canc-vis').on("click", function(){
         $('.visevent').slideToggle();
         $('.formedit').slideToggle();
-        // console.log('a');
     });
     
     $('.btn-canc-edit').on("click", function(){
