@@ -80,11 +80,6 @@
 
 $(document).ready(function(){
 
-  <?php 
-  if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['cadastro'])){
-    ?> load_cadastro(); <?php 
-  }
-  ?>
 
   function load_cadastro(query){
     $.ajax({
@@ -296,7 +291,10 @@ $(document).ready(function(){
         window.location.replace('index?id=$usuarioSession');<?php
       }
     }
+  }else if(isset($_GET['cadastro'])){?> 
+    load_cadastro(); <?php 
   }?>
+
 
   $('.button').on("click", function(){
       Swal.fire({
@@ -307,6 +305,7 @@ $(document).ready(function(){
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Sim',
+          cancelButtonText: 'Não',
           allowOutsideClick: () => {
               const popup = Swal.getPopup()
               popup.classList.remove('swal2-show')
@@ -338,6 +337,5 @@ $(document).ready(function(){
     });
 
 });
-
 
 </script>

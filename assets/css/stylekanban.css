@@ -1,5 +1,6 @@
+@import url('https://fonts.cdnfonts.com/css/gotham-6');
 body {
-    font-family: "Lato";
+    font-family: 'Gotham Black', sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -37,7 +38,6 @@ body {
     font-size: 16px;
 }
 
-
 .button {
   display: inline-block;
   padding: 0.75rem 1.25rem;
@@ -53,6 +53,7 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
+
 .button:after {
   content: "";
   position: absolute;
