@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="assets/js/jkanban.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
     <link rel="stylesheet" href="assets/css/stylekanban.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    
 
   </head>
   <body>
@@ -17,17 +19,58 @@
     if(isset($_GET['cadastro'])){
       ?>
       <div id="cadastro_task"></div>
+
       <?php
     }else{
       ?>
       <div id="myKanban"></div>
       <span class="button">Adicione uma tarefa!</span>
+      <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Detalhes do Evento</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                </div>
+                <div class="modal-body">
+                    <div class="visevent">
+                        <dl class="row">
+
+                            <dt class="col-sm-3">Título do evento</dt>
+                            <dd class="col-sm-9" id="title"></dd>
+
+                        </dl>
+                        <button class="btn btn-warning btn-canc-vis">Editar</button>
+                        <a href="" id="apagar_evento" class="btn btn-danger">Apagar</a>
+                    </div>
+
+
+                    <!-- editar -->
+                    <div class="formedit">
+                        <span id="msg-edit"></span>
+                        <form id="editevent" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="id" id="id">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Título</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="Título do evento">
+                                </div>
+                            </div>
+                        </form>                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
       <?php
     }
     ?>
     
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="assets/js/jkanban.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
@@ -229,6 +272,9 @@ $(document).ready(function(){
                 enabled: true,
             },
             click: function(el){
+              $('#visualizar').modal('show');
+              $('#visualizar #title').text(el.dataset.prioridade);
+              $('#visualizar #title').val(el.dataset.prioridade);
               console.log(el.dataset.prioridade);
             },
             dropEl: function(el, target, source, sibling){
@@ -248,6 +294,7 @@ $(document).ready(function(){
               
             },
             buttonClick: function(el, boardId) {
+                
                 console.log(el);
                 console.log(boardId);
                 // create a form to enter element
@@ -349,8 +396,19 @@ $(document).ready(function(){
               }, 200)
               
           }
-      })
-  });
+        })
+    });
+
+    $('.btn-canc-vis').on("click", function(){
+        $('.visevent').slideToggle();
+        $('.formedit').slideToggle();
+        // console.log('a');
+    });
+    
+    $('.btn-canc-edit').on("click", function(){
+        $('.formedit').slideToggle();
+        $('.visevent').slideToggle();
+    });
 
 });
 

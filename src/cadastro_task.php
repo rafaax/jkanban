@@ -1,3 +1,6 @@
+<style>
+
+</style>
 <div class="card">
     <div class="card-header">Cadastro de Compra</div>
     <div class="card-body">
@@ -107,3 +110,67 @@
         </form>
     </div>
 </div>
+
+
+<script>
+
+    $(document).ready(function(){
+
+    $('#form_cadastro').on("submit", function(event){
+            event.preventDefault();
+
+            $.ajax({
+                method: "POST",
+                url: "funcoes/compras/backend_cadastro.php",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Aguarde...',
+                        text: 'Cadastrando evento...',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success: function (result) {
+                    console.log(result);
+                    var json = JSON.parse(result);
+                    Swal.close();
+                    if(json.erro == false){
+                        Swal.fire({
+                            title: 'Compra cadastrada!',
+                            html: 'A página se auto-reiniciará em 3 segundos.',
+                            icon: 'success',
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                        })
+                        setTimeout(function() {
+                            window.location.href = "http://127.0.0.1/estoque_git/compras"
+                        }, 3000)
+                    }else if(json.erro == true){
+                        Swal.fire({
+                            title: json.msg,
+                            icon: 'error',
+                            allowOutsideClick: () => {
+                                const popup = Swal.getPopup()
+                                popup.classList.remove('swal2-show')
+                                setTimeout(() => {
+                                popup.classList.add('animate__animated', 'animate__headShake')
+                                })
+                                setTimeout(() => {
+                                popup.classList.remove('animate__animated', 'animate__headShake')
+                                }, 500)
+                                return false
+                            }
+                        })
+                    }
+                }
+            })
+        });
+    });
