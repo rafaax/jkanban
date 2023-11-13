@@ -1,13 +1,11 @@
 <?php 
-function retorna($erro, $msg){
 
+function retorna($erro, $msg){
     echo json_encode(array(
         'erro' => $erro,
         'msg' => $msg
     ));
-
 }
-
 
 function validaRegistro($task, $source){
     require 'conexao.php';
@@ -30,7 +28,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     require 'conexao.php';
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
-    file_put_contents('logPost.txt', file_get_contents("php://input"));
+    // file_put_contents('logPost.txt', file_get_contents("php://input"));
 
     if(validaRegistro($json->task_id, $json->source)){
         

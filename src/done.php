@@ -3,7 +3,7 @@
 require 'conexao.php';
 $client_data = file_get_contents("php://input");
 $json = json_decode($client_data);
-file_put_contents('logconcluidos.txt', file_get_contents("php://input"));
+// file_put_contents('logconcluidos.txt', file_get_contents("php://input"));
 $user = $json->user_id;
 
 
