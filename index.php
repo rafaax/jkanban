@@ -3,16 +3,14 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Kanban</title>
-    <link rel="stylesheet" href="assets/js/jkanban.min.css" />
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/js/jkanban.min.css"/>
     <link rel="stylesheet" href="assets/css/stylekanban.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     
-
+    
   </head>
   <body>
     <?php
@@ -21,7 +19,9 @@
       <div id="cadastro_task"></div>
 
       <?php
-    }else{
+    }else if(!isset($_GET['id'])){
+      header('Location: ?id='. $usuarioSession);
+    }else if(isset($_GET['id'])){
       ?>
       <div id="myKanban"></div>
       <span class="button">Adicione uma tarefa!</span>
@@ -63,16 +63,17 @@
                 </div>
             </div>
         </div>
-    </div>
+      </div>
       <?php
     }
     ?>
     
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     <script src="assets/js/jkanban.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
   </body>
 </html>
 
@@ -92,11 +93,18 @@ $(document).ready(function(){
   }
   
   function alertaAdm(){
-    Swal.fire({
-      title: "Cuidado!",
-      text: "Como administrador você pode adicionar tarefas à outro usuário que não seja você!",
-      icon: "warning"
-    });
+    if(Cookies.get('alertadministrador') == 'true'){
+      return false; // faz nada
+    }else{
+      Swal.fire({
+        title: "Cuidado!",
+        text: "Como administrador você pode adicionar tarefas à outro usuário que não seja você!",
+        icon: "warning"
+      });
+      Cookies.set('alertadministrador', 'true', { expires: 1 }) // expira em 1 dia
+    }
+    
+    
   }
 
   function get_pendencias(user) {
@@ -279,16 +287,16 @@ $(document).ready(function(){
 
   <?php 
   if(isset($_GET['id'])){
-    if($usuarioSession === $_GET['id']){?>
+    if($usuarioSession == $_GET['id']){?>
       initKanban();<?php
     }else{ 
-      if($permissoesSession === 1 && $usuarioSession == $_GET['id']){?>
+      if($permissoesSession == 1 && $usuarioSession == $_GET['id']){?>
           initKanban();<?php
-      }else if($permissoesSession === 1 && $usuarioSession != $_GET['id']){?>
+      }else if($permissoesSession == 1 && $usuarioSession != $_GET['id']){?>
         initKanban();
         alertaAdm();<?php
       }else{?>
-        window.location.replace('index?id=$usuarioSession');<?php
+        window.location.replace('index?id=<?=$usuarioSession?>');<?php
       }
     }
   }else if(isset($_GET['cadastro'])){?> 
