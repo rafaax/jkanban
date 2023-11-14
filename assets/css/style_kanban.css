@@ -6,7 +6,7 @@ body {
 }
 
 #myKanban {
-    overflow-x: auto;
+    /* overflow-x: auto; */
     padding: 20px 0;
 }
 
@@ -94,4 +94,9 @@ body.swal2-shown > [aria-hidden='true'] {
 }
 .formedit{
     display: none;
+}
+
+.wrapper {
+  display: flex;
+  /* grid-template-columns: 200px 200px; */
 }

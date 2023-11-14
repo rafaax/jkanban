@@ -7,7 +7,7 @@ $json = json_decode($client_data);
 $user = $json->user_id;
 
 
-$sql = "SELECT td.tarefa_id, tc.titulo, tc.prioridade from tarefas_todo td
+$sql = "SELECT td.tarefa_id, tc.titulo, (select prioridade from prioridade where id = tc.prioridade) as prioridade from tarefas_todo td
         inner join tarefas_criadas tc on tc.tarefa_id = td.tarefa_id
             where tc.usuario_tarefa = '$user'";
 
@@ -16,7 +16,7 @@ $query = mysqli_query($conexao, $sql);
 $tarefas = [];
 
 while($array = mysqli_fetch_array($query)){
-    if($array['prioridade'] == 'Urgente'){
+    if($array['prioridade'] == 1){
         $titulo = $array['titulo'] . ' <i class="fas fa-exclamation-triangle"></i>';
     }else{
         $titulo = $array['titulo'];

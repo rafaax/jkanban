@@ -6,7 +6,7 @@
 
     <title>Kanban</title>
     <link rel="stylesheet" href="assets/js/jkanban.min.css"/>
-    <link rel="stylesheet" href="assets/css/stylekanban.css"/>
+    <link rel="stylesheet" href="assets/css/style_kanban.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     
@@ -23,8 +23,14 @@
       header('Location: ?id='. $usuarioSession);
     }else if(isset($_GET['id'])){
       ?>
-      <div id="myKanban"></div>
+      <div class="wrapper">
+        <div id="myKanban"></div>
+        <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" width="100%" height="300"></iframe>
+      </div>
+      
       <span class="button">Adicione uma tarefa!</span>
+      
+      
       <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
