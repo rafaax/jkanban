@@ -1,6 +1,5 @@
 <?php require 'conexao.php';?>
 
-
 <div class="card">
     <div class="card-header">Cadastro de Compra</div>
     <div class="card-body">
@@ -8,16 +7,23 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="nome_produto" class="control-label mb-1">Titulo da Tarefa</label>
-                        <input id="nome_produto" name="nome_produto" class="form-control"
-                        type="text" aria-required="true" aria-invalid="false" placeholder="Nome do produto" required>
+                        <label for="tarefa" class="control-label mb-1">Titulo da Tarefa</label>
+                        <input id="tarefa" name="tarefa" class="form-control"
+                        type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="ptc" class="control-label mb-1">Identificador do PTC</label>
+                        <input id="ptc" name="ptc" class="form-control"
+                        type="text" aria-required="true" aria-invalid="false" placeholder="PTC" required>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="quantidade" class="control-label mb-1">Prioridade</label>
+                        <label for="prioridade" class="control-label mb-1">Prioridade</label>
                         <?php 
                         $sql = "SELECT id, prioridade from prioridade order by id asc ";
                         $query = mysqli_query($conexao, $sql);
@@ -33,21 +39,29 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-6">
+                    <label for="multiple-select-field" class="control-label mb-1">Atribuir para:</label>
+                    <select class="form-select" name="usuarios[]" id="multiple-select-field" data-placeholder="Pessoas" multiple>
+                        <?php 
+                        $sql = "SELECT login from usuarios"; 
+                        $query = mysqli_query($conexao, $sql);
+
+                        while($array = mysqli_fetch_array($query)){
+                            $login = $array['login'];
+                            echo "<option> $login </option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                
+                    
             </div>
 
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="data_compra" class="control-label mb-1">Data de Compra</label>
-                        <input id="data_compra" name="data_compra" type="date" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div id="previsao-entrega" class="ifpagamento_remoto">
-                        <div class="form-group">
-                            <label for="previsao_entrega" class="control-label mb-1">Previsão de entrega</label>
-                            <input id="previsao_entrega" name="previsao_entrega" type="date" class="form-control">
-                        </div>
+                        <label for="data_entrega" class="control-label mb-1">Data da entrega da tarefa</label>
+                        <input id="data_entrega" name="data_entrega" type="date" class="form-control" required>
                     </div>
                 </div>
                 <p>
@@ -63,24 +77,30 @@
     </div>
 </div>
 
-
 <script>
 
     $(document).ready(function(){
 
+    $( '#multiple-select-field' ).select2( {
+        theme: "bootstrap-5",
+        width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+        placeholder: $( this ).data( 'placeholder' ),
+        closeOnSelect: false,
+    } );
+
     $('#form_cadastro').on("submit", function(event){
             event.preventDefault();
-
+            let formulario = new FormData(this);
             $.ajax({
                 method: "POST",
-                url: "funcoes/compras/backend_cadastro.php",
+                url: "src/insert_task.php",
                 data: new FormData(this),
                 contentType: false,
                 processData: false,
                 beforeSend: function () {
                     Swal.fire({
                         title: 'Aguarde...',
-                        text: 'Cadastrando evento...',
+                        text: 'Cadastrando...',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         showConfirmButton: false,
