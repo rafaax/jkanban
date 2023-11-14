@@ -1,6 +1,6 @@
-<style>
+<?php require 'conexao.php';?>
 
-</style>
+
 <div class="card">
     <div class="card-header">Cadastro de Compra</div>
     <div class="card-body">
@@ -18,7 +18,19 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="quantidade" class="control-label mb-1">Prioridade</label>
-                        
+                        <?php 
+                        $sql = "SELECT id, prioridade from prioridade order by id asc ";
+                        $query = mysqli_query($conexao, $sql);
+                        ?>
+                        <select name="prioridade" id="prioridade" class="form-control">
+                            <?php 
+                            while($array = mysqli_fetch_assoc($query)){
+                                $prioridade = $array["prioridade"];
+                                $prioridade_id = $array["id"];
+                                echo "<option value='$prioridade_id'>$prioridade</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
             </div>
