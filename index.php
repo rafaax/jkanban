@@ -1,17 +1,15 @@
 <?php include 'src/validacao.php'; ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+<meta charset="UTF-8" />
 
-    <title>Kanban</title>
-    <link rel="stylesheet" href="assets/js/jkanban.min.css"/>
-    <link rel="stylesheet" href="assets/css/style_kanban.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+<title>Kanban</title>
+<link rel="stylesheet" href="assets/js/jkanban.min.css"/>
+<link rel="stylesheet" href="assets/css/style_kanban.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     
@@ -41,23 +39,34 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Detalhes do Evento</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <h5 class="modal-title" id="exampleModalLabel">Informações da Tarefa - <dd id="titulo_tarefa"></dd> </h5> 
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="visevent">
                         <dl class="row">
-
-                            <dt class="col-sm-3">Título do evento</dt>
-                            <dd class="col-sm-9" id="title"></dd>
-
+                          <dt class="col-sm-3">Prioridade da tarefa</dt>
+                          <dd class="col-sm-9" id="prioridade"></dd>
+                        </dl>
+                        <dl class="row">
+                          <dt class="col-sm-3">Data criada</dt>
+                          <dd class="col-sm-9" id="data_criada"></dd>
+                        </dl>
+                        <dl class="row">
+                          <dt class="col-sm-3">Data de término</dt>
+                          <dd class="col-sm-9" id="data_termino"></dd>
+                        </dl>
+                        <dl class="row">
+                          <dt class="col-sm-3">Quem criou a tarefa</dt>
+                          <dd class="col-sm-9" id="created_by"></dd>
+                        </dl>
+                        <dl class="row">
+                          <dt class="col-sm-3">Número PTC</dt>
+                          <dd class="col-sm-9" id="ptc"></dd>
                         </dl>
                         <button class="btn btn-warning btn-canc-vis">Editar</button>
                         <a href="" id="apagar_evento" class="btn btn-danger">Apagar</a>
                     </div>
-
 
                     <!-- editar -->
                     <div class="formedit">
@@ -87,7 +96,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
   </body>
@@ -261,8 +270,19 @@ $(document).ready(function(){
         },
         click: function(el){
           $('#visualizar').modal('show');
-          $('#visualizar #title').text(el.dataset.prioridade);
-          $('#visualizar #title').val(el.dataset.prioridade);
+          console.log(el.dataset);
+          $('#visualizar #titulo_tarefa').text(el.dataset.titulo_tarefa);
+          $('#visualizar #prioridade').text(el.dataset.prioridade);
+          $('#visualizar #prioridade').val(el.dataset.prioridade);
+          $('#visualizar #created_by').text(el.dataset.criado_por);
+          $('#visualizar #created_by').val(el.dataset.criado_por);
+          $('#visualizar #data_criada').text(el.dataset.data_criada);
+          $('#visualizar #data_criada').val(el.dataset.data_criada);
+          $('#visualizar #data_termino').text(el.dataset.data_vencimento);
+          $('#visualizar #data_termino').val(el.dataset.data_vencimento);
+          $('#visualizar #ptc').text(el.dataset.ptc);
+          $('#visualizar #ptc').val(el.dataset.ptc);
+          
           // console.log(el.dataset);
         },
         dropEl: function(el, target, source, sibling){
