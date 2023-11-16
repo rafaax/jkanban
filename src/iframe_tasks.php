@@ -34,9 +34,22 @@ function segundosToTempo($segundos){
 }
 
 
-$sql = "SELECT *, (select prioridade from prioridade  where id = tc.prioridade) as prioridade from tarefas_criadas tc WHERE 
-	data_final between NOW() AND DATE_ADD(NOW(), INTERVAL 30 DAY) and usuario_tarefa = '$idGet'
-	order BY data_final ASC";
+$sql = "SELECT tc.tarefa_id, tc.titulo, tc.criado_por, tc.usuario_tarefa, tc.data_criada, tc.data_final,
+        (select prioridade from prioridade where id = tc.prioridade) as prioridade
+        FROM tarefas_criadas tc
+        INNER JOIN tarefas_process tp ON tc.tarefa_id = tp.tarefa_id
+        WHERE tc.usuario_tarefa = '$idGet'
+
+        UNION
+
+        SELECT tc.tarefa_id, tc.titulo, tc.criado_por, tc.usuario_tarefa, tc.data_criada, tc.data_final,
+        (select prioridade from prioridade where id = tc.prioridade) as prioridade
+        FROM tarefas_criadas tc
+        INNER JOIN tarefas_todo tt ON tc.tarefa_id = tt.tarefa_id
+        WHERE tc.usuario_tarefa = '$idGet'
+
+        ORDER BY prioridade DESC, data_final asc;";
+
 $query = mysqli_query($conexao,$sql);
 ?>
 <div class="col-md-2">
@@ -58,20 +71,18 @@ while($array = mysqli_fetch_array($query, MYSQLI_ASSOC)){
     $data_vencimento  = date("Y-m-d H:i:s", strtotime($data_vencimento));
     $datahoje = date('Y-m-d H:i:s');
 
-    echo '<div class="tooltip-9" title="'.$prioridade.'">';
-        echo '<li class="d-flex justify-content-between">';
-            echo '<div class="d-flex flex-row align-items-center">'; 
-                echo '<div class="ml-2">';
-                    echo '<h6 class="mb-0">'.$titulo.'</h6>';
-                    echo '<div class="d-flex flex-row mt-1 text-black-50 date-time">';
-                    echo '<div><i class="fa fa-calendar-o"></i><span class="ml-2">' . date('d/m/y', strtotime($data_vencimento)). '</span></div>';
-                    echo '<div class="ml-3"><i class="fa fa-clock-o"></i><span class="ml-2"> Faltam: '. diferencaEntreDatasTempo($datahoje, $data_vencimento) . '</span></div>';
-                echo '</div>';
-            echo'</div>';
-        echo '</div>';
-        echo '<div class="d-flex flex-row align-items-center">';
-        echo '</li>';
-        echo '</div>';
+    echo '<li class="d-flex justify-content-between">';
+        echo ($data_vencimento < $datahoje) ? '<div class="d-flex flex-row align-items-center" style="background-color: rgba(255, 0, 0, 0.73)">' :  '<div class="d-flex flex-row align-items-center">';
+            echo '<div class="ml-2">';
+                echo ($prioridade != 'Urgente') ? "<h6 class='mb-0'>$titulo</h6>" : "<h6 class='mb-0'>$titulo - $prioridade</h6>";
+                echo '<div class="d-flex flex-row mt-1 text-black-50 date-time">';
+                echo '<div><i class="fa fa-calendar-o"></i><span class="ml-2">' . date('d/m/y', strtotime($data_vencimento)). '</span></div>';
+                echo '<div class="ml-3"><i class="fa fa-clock-o"></i><span class="ml-2"> Faltam: '. diferencaEntreDatasTempo($datahoje, $data_vencimento) . '</span></div>';
+            echo '</div>';
+        echo'</div>';
+    echo '</div>';
+    echo '<div class="d-flex flex-row align-items-center">';
+    echo '</li>';
     }
         echo '</ul>';
         echo '</div>';
@@ -98,7 +109,7 @@ while($array = mysqli_fetch_array($query, MYSQLI_ASSOC)){
                 scrolldelay = setTimeout(pageScroll,100, count);
                 setInterval('autoRefresh()', (count * 5)*1000);
             }else{
-                setInterval('autoRefresh()', 1800000);
+                setInterval('autoRefresh()', 5000);
             }   
         }
     function autoRefresh() {
