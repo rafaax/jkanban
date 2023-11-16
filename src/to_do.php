@@ -7,7 +7,7 @@ $json = json_decode($client_data);
 $user = $json->user_id;
 
 
-$sql = "SELECT td.tarefa_id, tc.titulo, tc.ptc_num, tc.data_criada, tc.data_final,
+$sql = "SELECT td.tarefa_id, tc.titulo, tc.ptc_num, tc.data_criada, tc.data_final, tc.prioridade as prioridade_id, 
         (SELECT login from usuarios where id = tc.criado_por) as created_by,  
         (select prioridade from prioridade where id = tc.prioridade) as prioridade from tarefas_todo td
         inner join tarefas_criadas tc on tc.tarefa_id = td.tarefa_id
@@ -23,7 +23,7 @@ while($array = mysqli_fetch_array($query)){
     }else{
         $ptc = $array['ptc_num'];
     }
-    if($array['prioridade'] == 1){
+    if($array['prioridade_id'] == 1){
         $titulo = $array['titulo'] . ' <i class="fas fa-exclamation-triangle"></i>';
     }else{
         $titulo = $array['titulo'];
@@ -33,7 +33,7 @@ while($array = mysqli_fetch_array($query)){
         'title' => $titulo,
         'task_id' => $array['tarefa_id'],
         'prioridade' => $array['prioridade'],
-        'titulo_tarefa' => $titulo,
+        'titulo_tarefa' => $array['titulo'],
         'ptc' => $ptc, 
         'data_vencimento' => $array['data_final'],
         'data_criada' => $array['data_criada'],
