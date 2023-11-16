@@ -30,46 +30,59 @@ if (isset($_COOKIE['auth_token'])) {
 <body>
 <div id="particles-js">
     <div class="container tamanho-largura">
-        <form action="src/logar.php" method="POST">
+        <form id="login" method="POST">
         <div class="form-group">
             <label>Login</label>
-            <input class="form-control" type="text" name="usuario" placeholder="Digite o e-mail ou login do usuário"
+            <input class="form-control" type="text" name="user" placeholder="Digite o login do usuário"
             autocomplete="off" />
         </div>
         <div class="form-group">
             <label>Senha</label>
-            <input class="form-control" type="password" name="senha" placeholder="Digite a senha do usuário" autocomplete="off" />
+            <input class="form-control" type="password" name="pass" placeholder="Digite a senha do usuário" autocomplete="off" />
         </div>
         <button type="submit" class="btn btn-success btn-sm btn-block">Entrar</button>
         <br>
-          <?php 
-          if (isset($_GET['semCadastro'])) 
-          {
-              echo '<div id="alerta" class="alert alert-danger" role="alert">
-              Usuario <b>' . $_GET['semCadastro'] . '</b>  sem cadastro!.
-              </div>';
-          }
-          
-          if (isset($_GET['dadosInvalidos'])) 
-          {
-              echo '<div id="alerta" class="alert alert-danger" role="alert">
-              Senha <b>' . $_GET['dadosInvalidos'] . '</b>  inválida!.
-              </div>';
-          }
-
-          if (isset($_GET['emailCadastrado'])) 
-          {
-              echo '<div id="alerta" class="alert alert-danger" role="alert">
-              Email <b>' . $_GET['emailCadastrado'] . '</b>  duplicado, pedir a central para recuperá-lo!.
-              </div>';
-          }
-          ?>
         </form>
     </div>
 </div> 
-<!-- <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>  -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
 <script  src="assets/js/particles.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+<script>
+
+     $("#login").on("submit", function (event) {
+        
+        event.preventDefault();
+
+        $.ajax({
+            method: "POST",
+            url: "src/logar.php",
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            success: function (json) {
+                var resposta = JSON.parse(json);
+                console.log(resposta.erro);
+                if(resposta.erro == true) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Usuário ou senha incorretos!'
+                    })
+                }else if(resposta.erro == 'empty'){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro!',
+                        text: 'Preencha o usuário e senha!'
+                    })
+                }
+                else if(resposta.erro == false) {
+                    window.location.href = "http://192.168.0.102/jkanban/"
+                }
+            }
+        })
+    });
+</script>
 </html>
