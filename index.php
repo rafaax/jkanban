@@ -17,10 +17,11 @@
   <body>
     <?php
     if(isset($_GET['cadastro'])){
-      ?>
-      <div id="cadastro_task"></div>
-
-      <?php
+      if($permissoesSession == 1){?>
+        <div id="cadastro_task"></div><?php  
+      }else{
+        header('Location: ?id='. $usuarioSession);
+      }
     }else if(!isset($_GET['id'])){
       header('Location: ?id='. $usuarioSession);
     }else if(isset($_GET['id'])){
@@ -32,7 +33,6 @@
       <?php if($permissoesSession == 1){
         echo '<span class="button">Adicione uma tarefa!</span>';
       }?>
-      
       
       
       <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -270,7 +270,6 @@ $(document).ready(function(){
         },
         click: function(el){
           $('#visualizar').modal('show');
-          console.log(el.dataset);
           $('#visualizar #titulo_tarefa').text(el.dataset.titulo_tarefa);
           $('#visualizar #prioridade').text(el.dataset.prioridade);
           $('#visualizar #prioridade').val(el.dataset.prioridade);
@@ -370,15 +369,15 @@ $(document).ready(function(){
         })
     });
     
-    $('.btn-canc-vis').on("click", function(){
-        $('.visevent').slideToggle();
-        $('.formedit').slideToggle();
-    });
+    // $('.btn-canc-vis').on("click", function(){
+    //     $('.visevent').slideToggle();
+    //     $('.formedit').slideToggle();
+    // });
     
-    $('.btn-canc-edit').on("click", function(){
-        $('.formedit').slideToggle();
-        $('.visevent').slideToggle();
-    });
+    // $('.btn-canc-edit').on("click", function(){
+    //     $('.formedit').slideToggle();
+    //     $('.visevent').slideToggle();
+    // });
 
 });
 

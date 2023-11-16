@@ -1,7 +1,7 @@
 <?php require 'conexao.php';?>
 
 <div class="card">
-    <div class="card-header">Cadastro de Compra</div>
+    <div class="card-header">Cadastro de Tarefa</div>
     <div class="card-body">
         <form id="form_cadastro" method="post">
             <div class="row">
@@ -41,27 +41,39 @@
                 </div>
                 <div class="col-6">
                     <label for="multiple-select-field" class="control-label mb-1">Atribuir para:</label>
-                    <select class="form-select" name="usuarios[]" id="multiple-select-field" data-placeholder="Pessoas" multiple>
+                    <select class="form-select" name="usuarios[]" id="multiple-select-field" data-placeholder="Usuários" multiple>
                         <?php 
-                        $sql = "SELECT login from usuarios"; 
+                        $sql = "SELECT * from usuarios"; 
                         $query = mysqli_query($conexao, $sql);
 
                         while($array = mysqli_fetch_array($query)){
                             $login = $array['login'];
-                            echo "<option> $login </option>";
+                            $usuario_id = $array['id'];
+                            echo "<option value='$usuario_id'> $login </option>";
                         }
                         ?>
                     </select>
-                </div>
-                
-                    
+                </div>  
             </div>
 
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
+                        <label for="descricao" class="control-label mb-1">Descrição da tarefa</label>
+                        <input id="descricao" name="descricao" class="form-control"
+                        type="text" aria-required="true" aria-invalid="false" placeholder="Descrição" required>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
                         <label for="data_entrega" class="control-label mb-1">Data da entrega da tarefa</label>
                         <input id="data_entrega" name="data_entrega" type="date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="tempo_entrega" class="control-label mb-1"></label>
+                        <input id="tempo_entrega" name="tempo_entrega" type="time" class="form-control">
                     </div>
                 </div>
                 <p>
@@ -90,7 +102,6 @@
 
     $('#form_cadastro').on("submit", function(event){
             event.preventDefault();
-            let formulario = new FormData(this);
             $.ajax({
                 method: "POST",
                 url: "src/insert_task.php",
@@ -123,7 +134,7 @@
                             },
                         })
                         setTimeout(function() {
-                            window.location.href = "http://127.0.0.1/estoque_git/compras"
+                            window.location.href = "http://127.0.0.1/jkanban/"
                         }, 3000)
                     }else if(json.erro == true){
                         Swal.fire({
