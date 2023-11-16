@@ -125,17 +125,28 @@
                     var json = JSON.parse(result);
                     Swal.close();
                     if(json.erro == false){
+                        let timerInterval;
                         Swal.fire({
-                            title: 'Compra cadastrada!',
-                            html: 'A página se auto-reiniciará em 3 segundos.',
                             icon: 'success',
+                            title: "Sucesso!",
+                            html: "Fechando em <b></b> milisegundos...",
+                            timer: 2000,
+                            timerProgressBar: true,
                             didOpen: () => {
-                                Swal.showLoading()
+                                Swal.showLoading();
+                                const timer = Swal.getPopup().querySelector("b");
+                                timerInterval = setInterval(() => {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                                }, 100);
                             },
-                        })
-                        setTimeout(function() {
-                            window.location.href = "http://127.0.0.1/jkanban/"
-                        }, 3000)
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            window.location.href = "http://192.168.0.102/jkanban/";
+                        }
+                        });
                     }else if(json.erro == true){
                         Swal.fire({
                             title: json.msg,

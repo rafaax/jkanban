@@ -28,7 +28,7 @@
       ?>
       <div class="wrapper">
         <div id="myKanban"></div>
-        <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" width="100%" height="300"></iframe>
+        <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" width="100%" height="700"></iframe>
       </div>
       <?php if($permissoesSession == 1){
         echo '<span class="button">Adicione uma tarefa!</span>';
