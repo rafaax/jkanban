@@ -24,11 +24,22 @@ function validaRegistro($task, $source){
     }
 }
 
+
+
+function logDragging($user, $task, $target, $source ){
+    require 'conexao.php';
+
+    $sql = "INSERT INTO logs(usuario_id, task_id, target, source) values('$user', '$task','$target','$source')";
+    mysqli_query($conexao, $sql);
+    
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     require 'conexao.php';
+    require 'validacao.php';
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
-    // file_put_contents('logPost.txt', file_get_contents("php://input"));
+    file_put_contents('logPost.txt', file_get_contents("php://input"));
 
     if(validaRegistro($json->task_id, $json->source)){
         
@@ -37,15 +48,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(mysqli_query($conexao, $sql)){
             $sql = "DELETE from $json->source where tarefa_id = '$json->task_id'";
             $query = mysqli_query($conexao, $sql);
-            return $query ? retorna(false, 'sem erro') : retorna(true, 'Ocorreu algum erro...');
-
+            if($query){
+                logDragging($usuarioSession, $json->task_id, $json->target, $json->source);
+                retorna(false, 'sem erro');
+                die();
+            }else{
+                retorna(true, 'Ocorreu algum erro...');
+                die();
+            }
         }else{
             retorna(true,'Ocorreu algum erro...');
+            die();
         }
     }else{
         retorna(true, 'Ocorreu um erro ao encontrar o registro');
+        die();
     }
-
-
-
 }

@@ -128,8 +128,6 @@ $(document).ready(function(){
       });
       Cookies.set('alertadministrador', 'true', { expires: 1 }) // expira em 1 dia
     }
-    
-    
   }
 
   function get_pendencias(user) {
@@ -222,7 +220,7 @@ $(document).ready(function(){
       data: JSON.stringify(json),
       contentType: "application/json",
       success: function(response) {
-        console.log(response);
+        // console.log(response);
         var response = JSON.parse(response);
         console.log(response.erro);
         if(response.erro == false){
