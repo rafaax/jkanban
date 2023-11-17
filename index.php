@@ -267,15 +267,19 @@ $(document).ready(function(){
             enabled: true,
         },
         click: function(el){
+          
+          var data_criada = moment(el.dataset.data_criada).toDate();
+          var data_vencimento = moment(el.dataset.data_vencimento).toDate();
+
           $('#visualizar').modal('show');
           $('#visualizar #titulo_tarefa').text(el.dataset.titulo_tarefa);
           $('#visualizar #prioridade').text(el.dataset.prioridade);
           $('#visualizar #prioridade').val(el.dataset.prioridade);
           $('#visualizar #created_by').text(el.dataset.criado_por);
           $('#visualizar #created_by').val(el.dataset.criado_por);
-          $('#visualizar #data_criada').text(el.dataset.data_criada);
+          $('#visualizar #data_criada').text(moment(data_criada).format('DD/MM/YYYY hh:mm'));
           $('#visualizar #data_criada').val(el.dataset.data_criada);
-          $('#visualizar #data_termino').text(el.dataset.data_vencimento);
+          $('#visualizar #data_termino').text(moment(data_vencimento).format('DD/MM/YYYY hh:mm'));
           $('#visualizar #data_termino').val(el.dataset.data_vencimento);
           $('#visualizar #ptc').text(el.dataset.ptc);
           $('#visualizar #ptc').val(el.dataset.ptc);

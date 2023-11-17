@@ -16,7 +16,7 @@ $sql = "SELECT td.tarefa_id, tc.titulo, tc.ptc_num, tc.data_criada, tc.data_fina
         (SELECT login from usuarios where id = tc.criado_por) as created_by,  
         (select prioridade from prioridade where id = tc.prioridade) as prioridade from tarefas_done td
         inner join tarefas_criadas tc on tc.tarefa_id = td.tarefa_id
-            where tc.usuario_tarefa = '$user'";
+            where tc.usuario_tarefa = '$user' and tc.data_final >= (NOW() - INTERVAL 24 HOUR) order by id desc limit 5";
 
 $query = mysqli_query($conexao, $sql);
 
