@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    
+    file_put_contents('logemail.txt', file_get_contents("php://input"));
     $smtpoptions = array(
         'ssl' => array(
             'verify_peer' => false,
@@ -44,7 +44,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $cc_email = $result['email'];
         $nome = $result['nome'];
         $sobrenome = $result['sobrenome'];
-        $login = $result['login'];
 
         $mail->addCC($cc_email, "$nome $sobrenome");
         $mail->setFrom('vetorian@vetorian.com');
@@ -60,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $body = $array['html'];
 
         $arrayHtml = array(
-            "%user%" => $login,
+            "%user%" => $json->usuario,
             "%content%" => "Tarefa foi cadastrada: <strong> $json->horario_cadastro </strong>",
             "%content2%" => "Tarefa foi iniciada: <strong>$json->horario_inicio</strong>",
         );
