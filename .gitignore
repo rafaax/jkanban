@@ -1,2 +1,4 @@
 assets/css/multiselect/
 assets/js/multiselect/
+vendor/composer/
+vendor/phpmailer/
