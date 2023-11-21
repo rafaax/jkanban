@@ -64,8 +64,11 @@
                           <dt class="col-sm-3">Número PTC</dt>
                           <dd class="col-sm-9" id="ptc"></dd>
                         </dl>
-                        <button class="btn btn-warning btn-canc-vis">Editar</button>
-                        <a href="" id="apagar_evento" class="btn btn-danger">Apagar</a>
+                        <?php 
+                        if($permissoesSession == 1){?>
+                          <button id="apagar_evento" class="btn btn-danger">Apagar</button><?php
+                        }?>
+                        
                     </div>
 
                     <!-- editar -->
@@ -270,7 +273,7 @@ $(document).ready(function(){
           
           var data_criada = moment(el.dataset.data_criada).toDate();
           var data_vencimento = moment(el.dataset.data_vencimento).toDate();
-
+          $("#apagar_evento").val(el.dataset.task_id);
           $('#visualizar').modal('show');
           $('#visualizar #titulo_tarefa').text(el.dataset.titulo_tarefa);
           $('#visualizar #prioridade').text(el.dataset.prioridade);
@@ -370,17 +373,87 @@ $(document).ready(function(){
           }
         })
     });
-    
-    // $('.btn-canc-vis').on("click", function(){
-    //     $('.visevent').slideToggle();
-    //     $('.formedit').slideToggle();
-    // });
-    
-    // $('.btn-canc-edit').on("click", function(){
-    //     $('.formedit').slideToggle();
-    //     $('.visevent').slideToggle();
-    // });
 
+    $('#apagar_evento').on("click", function(){
+        var id = this.value;
+
+        Swal.fire({
+          title: 'Alerta',
+          text: "Você realmente deseja deletar?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sim',
+          cancelButtonText: 'Não',
+          allowOutsideClick: () => {
+              const popup = Swal.getPopup()
+              popup.classList.remove('swal2-show')
+              setTimeout(() => {
+              popup.classList.add('animate__animated', 'animate__headShake')
+              })
+              setTimeout(() => {
+              popup.classList.remove('animate__animated', 'animate__headShake')
+              }, 500)
+              return false
+          }
+          }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: 'POST',
+              url: 'src/delete_task.php',
+              contentType: 'application/json',
+              data: JSON.stringify({id:id}),
+              success: function(resposta) {
+                // console.log(resposta);
+                var json = JSON.parse(resposta);
+                Swal.close();
+                if(json.erro == false){
+                  let timerInterval;
+                  Swal.fire({
+                    icon: 'success',
+                    title: "Sucesso!",
+                    html: "Fechando em <b></b> milisegundos...",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                  }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        window.location.href = "http://192.168.0.102/jkanban/";
+                    }
+                  });
+                }else if(json.erro == true){
+                  Swal.fire({
+                      title: json.msg,
+                      icon: 'error',
+                      allowOutsideClick: () => {
+                          const popup = Swal.getPopup()
+                          popup.classList.remove('swal2-show')
+                          setTimeout(() => {
+                          popup.classList.add('animate__animated', 'animate__headShake')
+                          })
+                          setTimeout(() => {
+                          popup.classList.remove('animate__animated', 'animate__headShake')
+                          }, 500)
+                          return false
+                      }
+                  })
+                }
+              }
+            });
+          }
+        })
+    });
+    
 });
 
 </script>
