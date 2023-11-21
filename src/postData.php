@@ -24,6 +24,18 @@ function validaRegistro($task, $source){
     }
 }
 
+function buscaCriador($task_id){
+    require 'conexao.php';
+    $sql = "SELECT * from tarefas_criadas where tarefa_id = '$task_id'";
+    $query = mysqli_query($conexao, $sql);
+    $array = mysqli_fetch_array($query);
+    return $array['criado_por'];
+}
+
+function curlEmail($task,$created_by, $user ){
+
+}
+
 
 
 function logDragging($user, $task, $target, $source ){
@@ -49,6 +61,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $sql = "DELETE from $json->source where tarefa_id = '$json->task_id'";
             $query = mysqli_query($conexao, $sql);
             if($query){
+                if($json->target == 'tarefas_done'){
+                    $created = buscaCriador($json->task_id);
+                    curlEmail($json->task_id, $created, $usuarioSession);
+                }
                 logDragging($usuarioSession, $json->task_id, $json->target, $json->source);
                 retorna(false, 'sem erro');
                 die();
