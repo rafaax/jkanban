@@ -34,7 +34,7 @@ if($count == 1){
         $id_db = $array['id'];
         $_SESSION['usuario'] = $array["id"];
         $token = md5(uniqid(rand(), true));
-        setcookie('auth_token', $token, time() + (30 * 24 * 60 * 60), '/'); // Cookie válido por 30 dias
+        setcookie('auth_token', $token, time() + (365 * 24 * 60 * 60), '/');
         $sql = "UPDATE usuarios SET auth_token = '$token' where id = $id_db";
         $query = mysqli_query($conexao, $sql);
 
