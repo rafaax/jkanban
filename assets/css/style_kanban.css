@@ -100,3 +100,17 @@ body.swal2-shown > [aria-hidden='true'] {
   display: flex;
   /* grid-template-columns: 200px 200px; */
 }
+
+.logout
+{
+    width:85px; 
+    margin-bottom:20px;
+    
+}
+
+.logout:hover
+{
+    transition: width 0.5s;
+    width: 95px;
+    cursor: pointer;
+}
