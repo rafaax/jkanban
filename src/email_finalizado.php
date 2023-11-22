@@ -48,7 +48,7 @@ function buscaUsuario($usuario){
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    file_put_contents('logemail.txt', file_get_contents("php://input"));
+    // file_put_contents('logemail.txt', file_get_contents("php://input"));
     $smtpoptions = array(
         'ssl' => array(
             'verify_peer' => false,
