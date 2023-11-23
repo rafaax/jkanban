@@ -34,7 +34,7 @@ function segundosToTempo($segundos){
 }
 
 
-$sql = "SELECT tc.tarefa_id, tc.titulo, tc.criado_por, tc.usuario_tarefa, tc.data_criada, tc.data_final,
+$sql = "SELECT tc.tarefa_id, tc.titulo, tc.descricao_tarefa, tc.criado_por, tc.usuario_tarefa, tc.data_criada, tc.data_final,
         (select prioridade from prioridade where id = tc.prioridade) as prioridade
         FROM tarefas_criadas tc
         INNER JOIN tarefas_process tp ON tc.tarefa_id = tp.tarefa_id
@@ -42,7 +42,7 @@ $sql = "SELECT tc.tarefa_id, tc.titulo, tc.criado_por, tc.usuario_tarefa, tc.dat
 
         UNION
 
-        SELECT tc.tarefa_id, tc.titulo, tc.criado_por, tc.usuario_tarefa, tc.data_criada, tc.data_final,
+        SELECT tc.tarefa_id, tc.titulo, tc.criado_por,tc.descricao_tarefa, tc.usuario_tarefa, tc.data_criada, tc.data_final,
         (select prioridade from prioridade where id = tc.prioridade) as prioridade
         FROM tarefas_criadas tc
         INNER JOIN tarefas_todo tt ON tc.tarefa_id = tt.tarefa_id

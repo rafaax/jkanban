@@ -13,7 +13,7 @@ $user = $json->user_id;
 //         where tc.usuario_tarefa = '$user'";
 // echo $sql;
 
-$sql = "SELECT tp.tarefa_id, tc.titulo, tc.ptc_num, tc.data_criada, tc.data_final, tc.prioridade as prioridade_id, 
+$sql = "SELECT tp.tarefa_id, tc.titulo, tc.ptc_num, tc.data_criada,tc.descricao_tarefa, tc.data_final, tc.prioridade as prioridade_id, 
         (SELECT login from usuarios where id = tc.criado_por) as created_by,  
         (select prioridade from prioridade where id = tc.prioridade) as prioridade from tarefas_process tp
         inner join tarefas_criadas tc on tc.tarefa_id = tp.tarefa_id
@@ -44,7 +44,8 @@ while($array = mysqli_fetch_array($query)){
         'ptc' => $ptc, 
         'data_vencimento' => $array['data_final'],
         'data_criada' => $array['data_criada'],
-        'criado_por' => $array['created_by']
+        'criado_por' => $array['created_by'],
+        'descricao' => $array['descricao_tarefa']
     ];
 }
 

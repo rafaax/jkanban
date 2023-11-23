@@ -67,6 +67,10 @@
                           <dt class="col-sm-3">Número PTC</dt>
                           <dd class="col-sm-9" id="ptc"></dd>
                         </dl>
+                        <dl class="row">
+                          <dt class="col-sm-3">Descricao da tarefa</dt>
+                          <dd class="col-sm-9" id="descricao"></dd>
+                        </dl>
                         <?php 
                         if($permissoesSession == 1){?>
                           <button id="apagar_evento" class="btn btn-danger">Apagar</button><?php
@@ -289,6 +293,8 @@ $(document).ready(function(){
           $('#visualizar #data_termino').val(el.dataset.data_vencimento);
           $('#visualizar #ptc').text(el.dataset.ptc);
           $('#visualizar #ptc').val(el.dataset.ptc);
+          $('#visualizar #descricao').text(el.dataset.descricao);
+          $('#visualizar #descricao').val(el.dataset.descricao);
           
           // console.log(el.dataset);
         },
