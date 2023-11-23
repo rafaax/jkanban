@@ -34,8 +34,16 @@
         <a href="src/logout.php"><img class="logout" src="assets/logout.png"></img></a>
       </div>
       <?php if($permissoesSession == 1){
-        echo '<span class="button">Adicione uma tarefa!</span>';
+        echo '<span class="button" id="adicionar-tarefa">Adicione uma tarefa!</span>';
       }?>
+
+      <div style="padding-bottom: 50px;">
+        <span id="filtrar-usuario" class="button">Visualizar outros KANBANS</span>
+        <!-- <select class="js-example-basic-single" style="width: 10%;">
+          <option value="AL">Alabama</option>
+          <option value="WY">Wyoming</option>
+        </select> -->
+      </div>
       
       
       <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -107,14 +115,52 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
   </body>
 </html>
 
 <script>
 
 $(document).ready(function(){
+
+
+  function get_usuarios() {
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+          type: "GET",
+          url: 'src/get_usuarios.php',
+          contentType: "application/json",
+          success: function(response) {
+
+            console.log(response);
+            var parsedResponse = JSON.parse(response);
+            console.log(parsedResponse)
+            const groupedData = {};
+              parsedResponse.forEach(item => {
+                  const key = Object.keys(item)[0];
+                  const value = item[key];
+                  groupedData[key] = value;
+              });
+              console.log(groupedData);
+              resolve(groupedData);
+          }})
+        })
+    } 
+
+  $('#filtrar-usuario').on("click", async function(){
+    const { value: user } = await Swal.fire({
+      title: "Selecione algum kanban para visualizar!",
+      input: "select",
+      inputOptions: get_usuarios(),
+      inputPlaceholder: "Selecione o usuário",
+      showCancelButton: true,
+
+    });
+    if (user) {
+      window.location.href = `index?id=${user}`;
+    }
+  });
+
 
 
   function load_cadastro(query){
@@ -353,7 +399,7 @@ $(document).ready(function(){
   }?>
 
 
-  $('.button').on("click", function(){
+  $('#adicionar-tarefa').on("click", function(){
       Swal.fire({
           title: 'Alerta',
           text: "Você deseja cadastrar uma tarefa?",
