@@ -147,46 +147,37 @@ function buscaNomeKanban($user){
 
 $(document).ready(function(){
 
-  function validaJson(user) {
-    return new Promise(function(resolve, reject) {
-      $.ajax({
-        type: "GET",
-        url: `src/to_do.php?iduser=${user}`,
-        contentType: "application/json",
-        success: function(response) {
-          console.log(response);
-          if (response == true) {
-            Swal.fire({
-              title: 'Existem tarefas novas para você!',
+  function validaJson(user){
+    $.ajax({
+      type: "GET",
+      url: `src/to_do.php?iduser=${user}`,
+      contentType: "application/json",
+      success: function(response) {
+        console.log(response);
+        if(response == true){
+          Swal.fire({
+              title: 'Existem tarefas novas para voce!',
               icon: 'warning',
               confirmButtonText: "OK!",
               allowOutsideClick: () => {
-                const popup = Swal.getPopup()
-                popup.classList.remove('swal2-show')
-                setTimeout(() => {
+                  const popup = Swal.getPopup()
+                  popup.classList.remove('swal2-show')
+                  setTimeout(() => {
                   popup.classList.add('animate__animated', 'animate__headShake')
-                })
-                setTimeout(() => {
+                  })
+                  setTimeout(() => {
                   popup.classList.remove('animate__animated', 'animate__headShake')
-                }, 500)
-                return false
+                  }, 500)
+                  return false
               }
-            });
-          } else if (response == false) {
-            console.log('ok');
-          }
-
-          // Resolva a Promise para indicar que a função foi concluída
-          resolve();
-        },
-        error: function(err) {
-          // Rejeite a Promise se houver um erro
-          reject(err);
+          })
+        }else if(response == false){
+          console.log('ok');
         }
-      });
-    });
+      }
+    })
   }
-    
+  
 
   function get_usuarios() {
     return new Promise(function(resolve, reject) {
@@ -442,15 +433,18 @@ $(document).ready(function(){
         ],
         dragBoards: false
       });
+      <?php
+      if(isset($_GET['id'])){?>
+        validaJson(<?=$_GET['id']?>);
+      <?php } ?>
+      
     }
 
   <?php 
   if(isset($_GET['id'])){
     if($usuarioSession == $_GET['id']){?>
-      validaJson(<?=$_GET['id']?>).then(function(){
-        initKanban();
-      });
-      <?php
+      initKanban();
+    <?php
     }else{ 
       if($permissoesSession == 1 && $usuarioSession == $_GET['id']){?>
           initKanban();<?php
