@@ -41,12 +41,15 @@ while($array = mysqli_fetch_array($query)){
         'descricao' => $array['descricao_tarefa']
     ];
 }
-
-if(is_dir('../files/' . '_'. $user)){
-    file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));
+$caminho = "../files/_$user";
+if(is_dir($caminho)){
+    $file = file_get_contents("$caminho/tarefas.json");
+    if($file != json_encode($tarefas)){
+        file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));    
+    }
 }else{
-    mkdir('../files/' . '_'.$user, 0700);
-    file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));
+    mkdir($caminho, 0700);
+    file_put_contents("$caminho/tarefas.json", json_encode($tarefas));
 }
 
 
