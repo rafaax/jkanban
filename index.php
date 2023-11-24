@@ -147,6 +147,46 @@ function buscaNomeKanban($user){
 
 $(document).ready(function(){
 
+  function validaJson(user) {
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        type: "GET",
+        url: `src/to_do.php?iduser=${user}`,
+        contentType: "application/json",
+        success: function(response) {
+          console.log(response);
+          if (response == true) {
+            Swal.fire({
+              title: 'Existem tarefas novas para você!',
+              icon: 'warning',
+              confirmButtonText: "OK!",
+              allowOutsideClick: () => {
+                const popup = Swal.getPopup()
+                popup.classList.remove('swal2-show')
+                setTimeout(() => {
+                  popup.classList.add('animate__animated', 'animate__headShake')
+                })
+                setTimeout(() => {
+                  popup.classList.remove('animate__animated', 'animate__headShake')
+                }, 500)
+                return false
+              }
+            });
+          } else if (response == false) {
+            console.log('ok');
+          }
+
+          // Resolva a Promise para indicar que a função foi concluída
+          resolve();
+        },
+        error: function(err) {
+          // Rejeite a Promise se houver um erro
+          reject(err);
+        }
+      });
+    });
+  }
+    
 
   function get_usuarios() {
     return new Promise(function(resolve, reject) {
@@ -219,7 +259,6 @@ $(document).ready(function(){
           data: JSON.stringify(jsonPost),
           contentType: "application/json",
           success: function(response) {
-              // console.log(response);
               try {
                   var parsedResponse = JSON.parse(response);
 
@@ -312,6 +351,7 @@ $(document).ready(function(){
 
 
   <?php if(isset($_GET['id'])){ ?>
+
     async function fetchPendencias() {
       var pendencias = await get_pendencias(<?=$_GET['id']?>);
       return pendencias;
@@ -407,7 +447,10 @@ $(document).ready(function(){
   <?php 
   if(isset($_GET['id'])){
     if($usuarioSession == $_GET['id']){?>
-      initKanban();<?php
+      validaJson(<?=$_GET['id']?>).then(function(){
+        initKanban();
+      });
+      <?php
     }else{ 
       if($permissoesSession == 1 && $usuarioSession == $_GET['id']){?>
           initKanban();<?php
