@@ -1,4 +1,14 @@
-<?php include 'src/validacao.php'; ?>
+<?php include 'src/validacao.php'; 
+
+function buscaNomeKanban($user){
+  require 'src/conexao.php';
+  $sql = "select nome, sobrenome from usuarios where id = $user";
+  $query = mysqli_query($conexao, $sql);
+  $array = mysqli_fetch_assoc($query);
+  $nomeKanban = $array['nome'] . ' ' . $array['sobrenome']; 
+  return $nomeKanban;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -26,11 +36,24 @@
       header('Location: ?id='. $usuarioSession);
     }else if(isset($_GET['id'])){
       ?>
+      <?php 
+      if($_GET['id'] != $usuarioSession){
+        echo '
+        <header> 
+          <h3>Visualizando o kanban de: '. buscaNomeKanban($_GET['id']).'</h3>
+        </header>';
+        echo '<div style="position: absolute; bottom: 0.8%; right:6%;">
+          <a href="index"><img class="logout" src="assets/home.png"></img></a>
+        </div>';
+      }
+      ?>
+      
       <div class="wrapper">
         <div id="myKanban"></div>
         <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" width="100%" height="700"></iframe>
       </div>
-      <div style="position: absolute; bottom: 8px; right:16px;">
+      
+      <div style="position: absolute; bottom: 0.8%; right:1.6%;">
         <a href="src/logout.php"><img class="logout" src="assets/logout.png"></img></a>
       </div>
       <?php if($permissoesSession == 1){
