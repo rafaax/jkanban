@@ -42,6 +42,14 @@ while($array = mysqli_fetch_array($query)){
     ];
 }
 
+if(is_dir('../files/' . '_'. $user)){
+    file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));
+}else{
+    mkdir('../files/' . '_'.$user, 0700);
+    file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));
+}
+
+
 echo json_encode($tarefas);
 
 ?>
