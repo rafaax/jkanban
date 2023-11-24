@@ -544,7 +544,7 @@ $(document).ready(function(){
                     }
                   }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.timer) {
-                        window.location.href = "http://192.168.0.102/jkanban/";
+                        window.location.href = "http://192.168.0.140/jkanban/";
                     }
                   });
                 }else if(json.erro == true){
