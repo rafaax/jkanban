@@ -144,7 +144,7 @@
                             }
                         }).then((result) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            window.location.href = "http://192.168.0.140/jkanban/";
+                            window.location.href = "http://192.168.0.166/jkanban/";
                         }
                         });
                     }else if(json.erro == true){

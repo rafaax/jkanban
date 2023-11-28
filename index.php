@@ -58,15 +58,12 @@ function buscaNomeKanban($user){
       </div>
       <?php if($permissoesSession == 1){
         echo '<span class="button" id="adicionar-tarefa">Adicione uma tarefa!</span>';
+        echo '<div style="padding-bottom: 50px;">
+          <span id="filtrar-usuario" class="button">Visualizar outros KANBANS</span>
+        </div>';
       }?>
 
-      <div style="padding-bottom: 50px;">
-        <span id="filtrar-usuario" class="button">Visualizar outros KANBANS</span>
-        <!-- <select class="js-example-basic-single" style="width: 10%;">
-          <option value="AL">Alabama</option>
-          <option value="WY">Wyoming</option>
-        </select> -->
-      </div>
+      
       
       
       <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -187,16 +184,16 @@ $(document).ready(function(){
           contentType: "application/json",
           success: function(response) {
 
-            console.log(response);
+            // console.log(response);
             var parsedResponse = JSON.parse(response);
-            console.log(parsedResponse)
+            // console.log(parsedResponse)
             const groupedData = {};
               parsedResponse.forEach(item => {
                   const key = Object.keys(item)[0];
                   const value = item[key];
                   groupedData[key] = value;
               });
-              console.log(groupedData);
+              // console.log(groupedData);
               resolve(groupedData);
           }})
         })
@@ -223,7 +220,7 @@ $(document).ready(function(){
       url:"src/cadastro_task.php",
       method:"post",
       success:function(data){
-        $('#cadastro_task').html(data); 
+        $('#cadastro_task').html(data);
       }
     });
   }
@@ -544,7 +541,7 @@ $(document).ready(function(){
                     }
                   }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.timer) {
-                        window.location.href = "http://192.168.0.140/jkanban/";
+                        window.location.href = "http://192.168.0.166/jkanban/";
                     }
                   });
                 }else if(json.erro == true){

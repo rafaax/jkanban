@@ -12,7 +12,7 @@ if (isset($_COOKIE['auth_token'])) {
         if($auth_token === $_COOKIE['auth_token']){
             session_start();
             $_SESSION['usuario'] = $array['id'];
-            header("Location: http://192.168.0.140/jkanban/index?id=" . $_SESSION['usuario']);
+            header("Location: http://192.168.0.166/jkanban/index?id=" . $_SESSION['usuario']);
             die();
         }
     }
@@ -79,7 +79,7 @@ if (isset($_COOKIE['auth_token'])) {
                     })
                 }
                 else if(resposta.erro == false) {
-                    window.location.href = "http://192.168.0.140/jkanban/"
+                    window.location.href = "http://192.168.0.166/jkanban/"
                 }
             }
         })

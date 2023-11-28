@@ -43,13 +43,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             'descricao' => $array['descricao_tarefa']
         ];
     }
+    
     $caminho = "../files/_$user";
     if(is_dir($caminho)){
         $file = file_get_contents("$caminho/tarefas.json");
         if($file != json_encode($tarefas)){
-            file_put_contents("../files/_$user/notify.txt", 1);    
-            file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));    
+            if(json_encode($tarefas) == '[]'){
+                file_put_contents("../files/_$user/notify.txt", 0);
+            }else{
+                file_put_contents("../files/_$user/notify.txt", 1);    
+                file_put_contents("../files/_$user/tarefas.json", json_encode($tarefas));
+            }
         }else{
+            // echo 'ok1';
             file_put_contents("../files/_$user/notify.txt", 0);    
         }
     }else{
