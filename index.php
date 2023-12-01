@@ -56,6 +56,9 @@ function buscaNomeKanban($user){
       <div style="position: absolute; bottom: 0.8%; right:1.6%;">
         <a href="src/logout.php"><img class="logout" src="assets/logout.png"></img></a>
       </div>
+      <div style="position: absolute; bottom: 10%; right:2%;">
+        <span id="calendario"><img class="logout" src="assets/calendar.png"></img></span>
+      </div>
       <?php if($permissoesSession == 1){
         echo '<span class="button" id="adicionar-tarefa">Adicione uma tarefa!</span>';
         echo '<div style="padding-bottom: 50px;">
@@ -143,6 +146,10 @@ function buscaNomeKanban($user){
 <script>
 
 $(document).ready(function(){
+
+  $('#calendario').on("click", function(){
+    window.location.href = "https://engedoc.com.br/calendario";
+  });
 
   function validaJson(user){
     $.ajax({
@@ -458,114 +465,88 @@ $(document).ready(function(){
 
 
   $('#adicionar-tarefa').on("click", function(){
+    window.location.href = "index?cadastro";
+  });
+
+  $('#apagar_evento').on("click", function(){
+      var id = this.value;
+
       Swal.fire({
-          title: 'Alerta',
-          text: "Você deseja cadastrar uma tarefa?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sim',
-          cancelButtonText: 'Não',
-          allowOutsideClick: () => {
-              const popup = Swal.getPopup()
-              popup.classList.remove('swal2-show')
-              setTimeout(() => {
-              popup.classList.add('animate__animated', 'animate__headShake')
-              })
-              setTimeout(() => {
-              popup.classList.remove('animate__animated', 'animate__headShake')
-              }, 500)
-              return false
-          }
-          }).then((result) => {
-          if (result.isConfirmed) {
-              setTimeout(function() {
-                  window.location.href = "index?cadastro";
-              }, 200)
-          }
-        })
-    });
-
-    $('#apagar_evento').on("click", function(){
-        var id = this.value;
-
-        Swal.fire({
-          title: 'Alerta',
-          text: "Você realmente deseja deletar?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Sim',
-          cancelButtonText: 'Não',
-          allowOutsideClick: () => {
-              const popup = Swal.getPopup()
-              popup.classList.remove('swal2-show')
-              setTimeout(() => {
-              popup.classList.add('animate__animated', 'animate__headShake')
-              })
-              setTimeout(() => {
-              popup.classList.remove('animate__animated', 'animate__headShake')
-              }, 500)
-              return false
-          }
-          }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              type: 'POST',
-              url: 'src/delete_task.php',
-              contentType: 'application/json',
-              data: JSON.stringify({id:id}),
-              success: function(resposta) {
-                // console.log(resposta);
-                var json = JSON.parse(resposta);
-                Swal.close();
-                if(json.erro == false){
-                  let timerInterval;
-                  Swal.fire({
-                    icon: 'success',
-                    title: "Sucesso!",
-                    html: "Fechando em <b></b> milisegundos...",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const timer = Swal.getPopup().querySelector("b");
-                        timerInterval = setInterval(() => {
-                        timer.textContent = `${Swal.getTimerLeft()}`;
-                        }, 100);
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval);
+        title: 'Alerta',
+        text: "Você realmente deseja deletar?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        allowOutsideClick: () => {
+            const popup = Swal.getPopup()
+            popup.classList.remove('swal2-show')
+            setTimeout(() => {
+            popup.classList.add('animate__animated', 'animate__headShake')
+            })
+            setTimeout(() => {
+            popup.classList.remove('animate__animated', 'animate__headShake')
+            }, 500)
+            return false
+        }
+        }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: 'POST',
+            url: 'src/delete_task.php',
+            contentType: 'application/json',
+            data: JSON.stringify({id:id}),
+            success: function(resposta) {
+              // console.log(resposta);
+              var json = JSON.parse(resposta);
+              Swal.close();
+              if(json.erro == false){
+                let timerInterval;
+                Swal.fire({
+                  icon: 'success',
+                  title: "Sucesso!",
+                  html: "Fechando em <b></b> milisegundos...",
+                  timer: 2000,
+                  timerProgressBar: true,
+                  didOpen: () => {
+                      Swal.showLoading();
+                      const timer = Swal.getPopup().querySelector("b");
+                      timerInterval = setInterval(() => {
+                      timer.textContent = `${Swal.getTimerLeft()}`;
+                      }, 100);
+                  },
+                  willClose: () => {
+                      clearInterval(timerInterval);
+                  }
+                }).then((result) => {
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                      window.location.href = "http://192.168.0.166/jkanban/";
+                  }
+                });
+              }else if(json.erro == true){
+                Swal.fire({
+                    title: json.msg,
+                    icon: 'error',
+                    allowOutsideClick: () => {
+                        const popup = Swal.getPopup()
+                        popup.classList.remove('swal2-show')
+                        setTimeout(() => {
+                        popup.classList.add('animate__animated', 'animate__headShake')
+                        })
+                        setTimeout(() => {
+                        popup.classList.remove('animate__animated', 'animate__headShake')
+                        }, 500)
+                        return false
                     }
-                  }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        window.location.href = "http://192.168.0.166/jkanban/";
-                    }
-                  });
-                }else if(json.erro == true){
-                  Swal.fire({
-                      title: json.msg,
-                      icon: 'error',
-                      allowOutsideClick: () => {
-                          const popup = Swal.getPopup()
-                          popup.classList.remove('swal2-show')
-                          setTimeout(() => {
-                          popup.classList.add('animate__animated', 'animate__headShake')
-                          })
-                          setTimeout(() => {
-                          popup.classList.remove('animate__animated', 'animate__headShake')
-                          }, 500)
-                          return false
-                      }
-                  })
-                }
+                })
               }
-            });
-          }
-        })
-    });
+            }
+          });
+        }
+      })
+  });
     
 });
 

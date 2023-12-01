@@ -80,10 +80,14 @@
             </div>
             
             <div>
-                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                <button id="payment-button" type="submit" class="btn btn-lg btn-success">
                     <span>Cadastrar</span>
-                    <i class="zmdi zmdi-check"></i>&nbsp;
                 </button>
+                <a href="index">
+                    <span class="btn btn-lg btn-info btn-secondary">
+                        <span>Voltar ao Kanban</span>
+                    </span>
+                </a>
             </div>
         </form>
     </div>
@@ -93,12 +97,12 @@
 
     $(document).ready(function(){
 
-    $( '#multiple-select-field' ).select2( {
+    $('#multiple-select-field' ).select2( {
         theme: "bootstrap-5",
         width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
         placeholder: $( this ).data( 'placeholder' ),
         closeOnSelect: false,
-    } );
+    });
 
     $('#form_cadastro').on("submit", function(event){
             event.preventDefault();
