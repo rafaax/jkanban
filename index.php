@@ -190,21 +190,39 @@ $(document).ready(function(){
           url: 'src/get_usuarios.php',
           contentType: "application/json",
           success: function(response) {
-
             // console.log(response);
-            var parsedResponse = JSON.parse(response);
-            // console.log(parsedResponse)
-            const groupedData = {};
-              parsedResponse.forEach(item => {
-                  const key = Object.keys(item)[0];
-                  const value = item[key];
-                  groupedData[key] = value;
-              });
-              // console.log(groupedData);
-              resolve(groupedData);
+            var json = JSON.parse(response);
+            console.log(json)
+            const data = {};
+            json.forEach(item => {
+                const key = Object.keys(item)[0];
+                const value = item[key];
+                console.log('Key' + key);
+                console.log('Value' + value);
+                data[key] = value;
+            });
+
+            console.log(data);
+            resolve(data);
+            
           }})
         })
-    } 
+    }
+
+
+  function get_userid(user){
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        type: "GET",
+        url: 'src/get_id.php?username=' + user,
+        contentType: "application/json",
+        success: function(response) {
+          console.log(response);
+          resolve(response);
+        }
+      })
+    })
+  } 
 
   $('#filtrar-usuario').on("click", async function(){
     const { value: user } = await Swal.fire({
@@ -216,7 +234,10 @@ $(document).ready(function(){
 
     });
     if (user) {
-      window.location.href = `index?id=${user}`;
+      get_userid(user)
+        .then(id => {
+          window.location.href = 'index?id=' + id;
+        })
     }
   });
 
@@ -232,6 +253,7 @@ $(document).ready(function(){
     });
   }
   
+
   function alertaAdm(){
     if(Cookies.get('alertadministrador') == 'true'){
       return false; // faz nada
@@ -244,6 +266,7 @@ $(document).ready(function(){
       Cookies.set('alertadministrador', 'true', { expires: 1 }) // expira em 1 dia
     }
   }
+
 
   function get_pendencias(user) {
     return new Promise(function(resolve, reject) {

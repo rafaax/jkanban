@@ -43,7 +43,7 @@
                     <label for="multiple-select-field" class="control-label mb-1">Atribuir para:</label>
                     <select class="form-select" name="usuarios[]" id="multiple-select-field" data-placeholder="Usuários" multiple>
                         <?php 
-                        $sql = "SELECT * from usuarios"; 
+                        $sql = "SELECT * from usuarios order by nome asc"; 
                         $query = mysqli_query($conexao, $sql);
 
                         while($array = mysqli_fetch_array($query)){
