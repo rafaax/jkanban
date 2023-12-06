@@ -71,9 +71,17 @@ while($array = mysqli_fetch_array($query, MYSQLI_ASSOC)){
     $data_vencimento  = date("Y-m-d H:i:s", strtotime($data_vencimento));
     $datahoje = date('Y-m-d H:i:s');
 
+    $horasDiff = diferencaEntreDatasSegundos($datahoje, $data_vencimento) / 3600;
+
     echo  ($data_vencimento < $datahoje) ? '<div class="tooltip-9" title="Atrasado">' : '';
     echo '<li class="d-flex justify-content-between">';
-        echo ($data_vencimento < $datahoje) ? '<div class="d-flex flex-row align-items-center" style="background-color: rgba(255, 0, 0, 0.73)">' :  '<div class="d-flex flex-row align-items-center">';
+        if($data_vencimento < $datahoje){
+            echo '<div class="d-flex flex-row align-items-center rise-shake" style="background-color: rgba(255, 0, 0, 0.73)">';
+        }else if($horasDiff < 24){
+            echo '<div class="d-flex flex-row align-items-center" style="background-color: rgba(255, 255, 0, 0.73)">';
+        }else{
+            echo '<div class="d-flex flex-row align-items-center">';
+        } 
             echo '<div class="ml-2">';
                 echo ($prioridade != 'Urgente') ? "<h6 class='mb-0'>$titulo</h6>" : "<h6 class='mb-0'>$titulo - $prioridade</h6>";
                 echo '<div class="d-flex flex-row mt-1 text-black-50 date-time">';

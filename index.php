@@ -48,7 +48,7 @@ function buscaNomeKanban($user){
       }
       ?>
       
-      <div class="wrapper">
+      <div style="display: flex;">
         <div id="myKanban"></div>
         <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" width="100%" height="700"></iframe>
       </div>

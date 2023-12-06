@@ -1,10 +1,26 @@
 @import url('https://fonts.cdnfonts.com/css/montserrat');
 
+@keyframes jump-shaking {
+  0% { transform: translateX(0) }
+  25% { transform: translateY(-9px) }
+  35% { transform: translateY(-9px) rotate(17deg) }
+  55% { transform: translateY(-9px) rotate(-17deg) }
+  65% { transform: translateY(-9px) rotate(17deg) }
+  75% { transform: translateY(-9px) rotate(-17deg) }
+  100% { transform: translateY(0) rotate(0) }
+}
+
+
 body{
     font-family: 'Montserrat', sans-serif;
     background-color: transparent;
 } 
 
+.rise-shake {
+  animation: jump-shaking 1.5s infinite;
+}
+
+/* Estilos padrão para ícones */
 .icons i {
     color: #b5b3b3;
     border: 1px solid #b5b3b3;
@@ -14,14 +30,17 @@ body{
     cursor: pointer;
 }
 
+/* Estilos para atividades concluídas */
 .activity-done {
     font-weight: 600;
 }
 
+/* Estilos para lista de grupos */
 .list-group li {
     margin-bottom: 12px;
 }
 
+/* Estilos para lista */
 .list li {
     list-style: none;
     padding: 10px;
@@ -31,15 +50,37 @@ body{
     background: #fff;
 }
 
+/* Estilos para ícone de verificação */
 .checkicon {
-color: green;
-font-size: 19px;
+    color: green;
+    font-size: 19px;
 }
 
+/* Estilos para data e hora */
 .date-time {
     font-size: 12px;
 }
 
+/* Estilos para imagem de perfil */
 .profile-image img {
     margin-left: 3px;
+}
+
+/* Media query para ajustar estilos em telas menores */
+@media only screen and (max-width: 768px) {
+    /* Adicione estilos específicos para telas menores aqui */
+    .list li {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .icons i {
+        padding: 4px;
+        margin-left: 2px;
+        font-size: 18px;
+    }
+
+    .profile-image img {
+        margin-left: 0;
+    }
 }

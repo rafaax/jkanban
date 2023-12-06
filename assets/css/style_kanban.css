@@ -7,7 +7,11 @@ body {
 
 #myKanban {
     /* overflow-x: auto; */
-    padding: 20px 0;
+    padding: 20px 5%;
+}
+
+.success, .info, .warning, .error {
+    padding: 10px;
 }
 
 .success {
@@ -30,17 +34,17 @@ body {
     background-color: #4CAF50;
     border: none;
     color: white;
-    padding: 7px 15px;
+    padding: 7px 5%;
     margin: 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .button {
   display: inline-block;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 5%;
   border-radius: 10rem;
   color: #fff;
   text-transform: uppercase;
@@ -96,11 +100,6 @@ body.swal2-shown > [aria-hidden='true'] {
     display: none;
 }
 
-.wrapper {
-  display: flex;
-  /* grid-template-columns: 200px 200px; */
-}
-
 .logout
 {
     width:85px; 
@@ -113,4 +112,20 @@ body.swal2-shown > [aria-hidden='true'] {
     transition: width 0.5s;
     width: 95px;
     cursor: pointer;
+}
+
+
+@media only screen and (max-width: 768px) {
+    #myKanban {
+        padding: 20px 2%;
+    }
+
+    .custom-button,
+    .button {
+        padding: 7px 3%;
+    }
+
+    .logout {
+        width: 75px;
+    }
 }
