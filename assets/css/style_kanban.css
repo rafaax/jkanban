@@ -7,7 +7,7 @@ body {
 
 #myKanban {
     /* overflow-x: auto; */
-    padding: 20px 5%;
+    padding: 20px ;
 }
 
 .success, .info, .warning, .error {
@@ -112,20 +112,4 @@ body.swal2-shown > [aria-hidden='true'] {
     transition: width 0.5s;
     width: 95px;
     cursor: pointer;
-}
-
-
-@media only screen and (max-width: 768px) {
-    #myKanban {
-        padding: 20px 2%;
-    }
-
-    .custom-button,
-    .button {
-        padding: 7px 3%;
-    }
-
-    .logout {
-        width: 75px;
-    }
 }

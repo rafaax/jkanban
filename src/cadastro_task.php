@@ -97,6 +97,17 @@
 
     $(document).ready(function(){
 
+    var formLine = 1;
+    function addInput(divName) {
+        var newdiv = $('<div>', { class: 'form-group' });
+
+        newdiv.append('<label for="tarefa' + formLine + '" class="control-label mb-1">Titulo da Tarefa</label>');
+        newdiv.append('<input id="tarefa' + formLine + '" name="tarefa' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>');
+
+        $('#' + divName).append(newdiv);
+        formLine++;
+    }
+
     $('#multiple-select-field' ).select2( {
         theme: "bootstrap-5",
         width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',

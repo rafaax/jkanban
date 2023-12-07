@@ -16,19 +16,23 @@ $idGet = $_GET['id'];
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <?php 
+
 date_default_timezone_set('America/Sao_Paulo');
+
 function diferencaEntreDatasSegundos($dataMenor, $dataMaior){
     $datetime1 = strtotime($dataMaior);
     $datetime2 = strtotime($dataMenor);
     $interval = ($datetime1 - $datetime2);
     return $interval;
 }
+
 function diferencaEntreDatasTempo($dataMenor, $dataMaior){
     $datetime1 = new DateTime($dataMenor);
     $datetime2 = new DateTime($dataMaior);
     $interval = $datetime1->diff($datetime2);
     return $interval->format('%a dias %H horas %i minutos ');
 }
+
 function segundosToTempo($segundos){
     return sprintf('%02d:%02d:%02d', ($segundos/3600),($segundos/60%60), $segundos%60);
 }
@@ -81,7 +85,7 @@ while($array = mysqli_fetch_array($query, MYSQLI_ASSOC)){
             echo '<div class="d-flex flex-row align-items-center" style="background-color: rgba(255, 255, 0, 0.73)">';
         }else{
             echo '<div class="d-flex flex-row align-items-center">';
-        } 
+        }
             echo '<div class="ml-2">';
                 echo ($prioridade != 'Urgente') ? "<h6 class='mb-0'>$titulo</h6>" : "<h6 class='mb-0'>$titulo - $prioridade</h6>";
                 echo '<div class="d-flex flex-row mt-1 text-black-50 date-time">';
