@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-6">
                     <label for="multiple-select-field" class="control-label mb-1">Atribuir para:</label>
-                    <select class="form-select" name="usuarios[]" id="multiple-select-field" data-placeholder="Usuários" multiple>
+                    <select class="form-select" name="usuarios" id="multiple-select-field" data-placeholder="Usuários">
                         <?php 
                         $sql = "SELECT * from usuarios order by nome asc"; 
                         $query = mysqli_query($conexao, $sql);
@@ -183,7 +183,7 @@
             event.preventDefault();
             $.ajax({
                 method: "POST",
-                url: "src/insert_task.php",
+                url: "src/insert_task_sequenciada.php",
                 data: new FormData(this),
                 contentType: false,
                 processData: false,

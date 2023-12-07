@@ -31,26 +31,26 @@ function buscaNomeKanban($user){
       
       <?php
         if($_GET['cadastro'] != 'sequencial' && $_GET['cadastro'] != 'padrao'){
-          echo '<div class="row">
-          <div class="col-sm-6">
+          echo '
+          <div class="col-sm-3">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="index?cadastro=padrao" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">Tarefa padrão</h5>
+                <p class="card-text">Tarefa atrelada a um ou mais usuários.</p>
+                <a href="index?cadastro=padrao" class="btn btn-primary">Cadastrar</a>
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="index?cadastro=sequencial" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">Tarefa com Sequência</h5>
+                <p class="card-text">Tarefa step-by-step, com 1 ou mais passos, no qual o segundo depende do primeiro para iniciar.</p>
+                <a href="index?cadastro=sequencial" class="btn btn-primary">Cadastrar</a>
               </div>
             </div>
           </div>
-        </div>';
+        ';
         }
 
         if($_GET['cadastro'] == 'sequencial'){
