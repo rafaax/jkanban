@@ -28,7 +28,39 @@ function buscaNomeKanban($user){
     <?php
     if(isset($_GET['cadastro'])){
       if($permissoesSession == 1){?>
-        <div id="cadastro_task"></div><?php  
+      
+      <?php
+        if($_GET['cadastro'] != 'sequencial' && $_GET['cadastro'] != 'padrao'){
+          echo '<div class="row">
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="index?cadastro=padrao" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="index?cadastro=sequencial" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+        </div>';
+        }
+
+        if($_GET['cadastro'] == 'sequencial'){
+          echo '<div id="cadastro_task_sq"></div>';
+        }else if($_GET['cadastro'] == 'padrao'){
+          echo '<div id="cadastro_task_pd"></div>';
+        }
+        ?>
+        
+        <?php  
       }else{
         header('Location: ?id='. $usuarioSession);
       }
@@ -248,7 +280,18 @@ $(document).ready(function(){
       url:"src/cadastro_task.php",
       method:"post",
       success:function(data){
-        $('#cadastro_task').html(data);
+        $('#cadastro_task_pd').html(data);
+      }
+    });
+  }
+
+  
+  function load_cadastro_sequencial(query){
+    $.ajax({
+      url:"src/cadastro_task_sequenciada.php",
+      method:"post",
+      success:function(data){
+        $('#cadastro_task_sq').html(data);
       }
     });
   }
@@ -482,8 +525,10 @@ $(document).ready(function(){
         window.location.replace('index?id=<?=$usuarioSession?>');<?php
       }
     }
-  }else if(isset($_GET['cadastro'])){?> 
+  }else if(isset($_GET['cadastro']) && $_GET['cadastro'] == 'padrao'){?> 
     load_cadastro(); <?php 
+  }else if(isset($_GET['cadastro']) && $_GET['cadastro'] == 'sequencial'){?>
+    load_cadastro_sequencial();<?php
   }?>
 
 

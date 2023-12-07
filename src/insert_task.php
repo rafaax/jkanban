@@ -26,7 +26,9 @@ function validaData($data_post){
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['tarefa']) && isset($_POST['ptc']) && isset($_POST['prioridade']) && isset($_POST['descricao'])){
-        $titulo = $_POST['tarefa']; 
+        $titulo = $_POST['tarefa'];
+        file_put_contents('log.json', $_POST['tarefa1']);
+        /*
         $ptc = $_POST['ptc']; 
         $prioridade = $_POST['prioridade']; 
         $descricao = $_POST['descricao'];
@@ -80,7 +82,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 'msg' => 'Você deve selecionar ao menos um usuário.'
             ));
         }
-    }else{
+    */}else{
         exit();
     }
 
