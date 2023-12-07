@@ -1,7 +1,12 @@
 <?php require 'conexao.php';?>
 
 <div class="card">
-    <div class="card-header">Cadastro de Tarefa</div>
+    <div class="card-header">
+        Cadastro de Tarefa
+        <div style="text-align: right;">
+            
+        </div>
+    </div>
     <div class="card-body">
         <form id="form_cadastro" method="post">
             <div class="row">
@@ -78,16 +83,27 @@
                 </div>
                 <p>
             </div>
+
+            <span class="btn btn-lg btn-info btn-warning" id="adicionarStep">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                        <path d="M416 208H272V64c0-17.7-14.3-32-32-32h-32c-17.7 0-32 14.3-32 32v144H32c-17.7 0-32 14.3-32 32v32c0 17.7 14.3 32 32 32h144v144c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V304h144c17.7 0 32-14.3 32-32v-32c0-17.7-14.3-32-32-32z"/>
+                    </svg>
+                </span>
+            </span> 
+            <p>
             
             <div>
                 <button id="payment-button" type="submit" class="btn btn-lg btn-success">
                     <span>Cadastrar</span>
                 </button>
-                <a href="index">
-                    <span class="btn btn-lg btn-info btn-secondary">
-                        <span>Voltar ao Kanban</span>
-                    </span>
-                </a>
+                <div style="text-align: right;">
+                    <a href="index">
+                        <span class="btn btn-sm btn-info btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M11.5 280.6l192 160c20.6 17.2 52.5 2.8 52.5-24.6V96c0-27.4-31.9-41.8-52.5-24.6l-192 160c-15.3 12.8-15.3 36.4 0 49.2zm256 0l192 160c20.6 17.2 52.5 2.8 52.5-24.6V96c0-27.4-31.9-41.8-52.5-24.6l-192 160c-15.3 12.8-15.3 36.4 0 49.2z"/></svg>
+                        </span>
+                    </a>
+                </div>
             </div>
         </form>
     </div>
