@@ -115,7 +115,7 @@
 
     $(document).ready(function(){
 
-    var formLine = 2;
+    var formLine = 1;
 
     function addInput(divName) {
         var hr = $('<hr>');

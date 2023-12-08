@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $usuario = $_POST['usuarios'];
 
             $dataJson = array(
-                1 => array(
+                0 => array(
                     'tarefa' => $titulo,
                     'ptc' => $ptc,
                     'prioridade' => $prioridade,
@@ -53,16 +53,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 )
             );
 
-            $count = 2;
+            $count = 1;
             while(isset($_POST["usuarios-$count"])){
                 $usuario = $_POST["usuarios-$count"];
                 $dataHora = $_POST["data_entrega-$count"] . ' '. $_POST["tempo_entrega-$count"];
                 $titulo = $_POST["tarefa-$count"];
                 $prioridade = $_POST["prioridade-$count"];
 
-
-                echo $count . ' - '. $_POST["usuarios-$count"] ;
-                echo(' - ' .  $dataHora . PHP_EOL);
+                // echo $count . ' - '. $_POST["usuarios-$count"] ;
+                
                 array_push($dataJson, 
                     array(
                         'tarefa' => $titulo,
@@ -76,20 +75,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $count++;
             }
             
-            if(file_put_contents('ptc='.$ptc.'user='.$usuarioSession.'.json', json_encode($dataJson))){
-
+            if(file_put_contents('jsons/ptc='.$ptc.'user='.$usuarioSession.'.json', json_encode($dataJson))){
+                $jsonGet= file_get_contents('jsons/ptc='.$ptc.'user='.$usuarioSession.'.json');
+                
+                $tasks =json_decode($jsonGet, true);
+                print_r($tasks);
+                // print_r($tasks[1]);
+                // echo $tasks[1]['tarefa'];
+                unset($tasks[0]);
+                print_r($tasks);
+                $tasks = array_values($tasks);
+                print_r($tasks);
+                $tasks = json_encode($tasks);
+                file_put_contents('ptc='.$ptc.'user='.$usuarioSession.'.json', json_encode($tasks));
             }
 
-
-            // echo json_encode($dataJson);
-            // echo PHP_EOL;
-            // print_r($dataJson);
-            // echo PHP_EOL;
-            unset($dataJson[1]);
-            // print_r($dataJson);
-
-            // echo PHP_EOL;
-            
         }else{
             echo json_encode(array(
                 'erro' => true,
