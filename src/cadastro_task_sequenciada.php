@@ -123,11 +123,11 @@
         var title = $('<h5>Step '+ formLine + '</h2>');
 
         var newdiv = $('<div>', { class: 'row' });
-        
+
         var col1 = $('<div>', { class: 'col-6' });
         col1.append('<div class="form-group">' +
             '<label for="tarefa-' + formLine + '" class="control-label mb-1">Titulo da Tarefa</label>' +
-            '<input id="tarefa-' + formLine + '" name="tarefa' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>' +
+            '<input id="tarefa-' + formLine + '" name="tarefa-' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>' +
             '</div>'
         );
 

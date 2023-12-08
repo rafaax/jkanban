@@ -26,6 +26,7 @@ function validaData($data_post){
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['tarefa']) && isset($_POST['ptc']) && isset($_POST['prioridade']) && isset($_POST['descricao'])){
+        
         $titulo = $_POST['tarefa'];    
         $ptc = $_POST['ptc']; 
         $prioridade = $_POST['prioridade']; 
@@ -37,21 +38,57 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         validaData($data);
 
-        $dataJson = array();
-        
-        
+
         if(isset($_POST['usuarios'])){
-            $usuarios = $_POST['usuarios'];
-            echo '1 - ' .$usuarios . PHP_EOL;
+            $usuario = $_POST['usuarios'];
+
+            $dataJson = array(
+                1 => array(
+                    'tarefa' => $titulo,
+                    'ptc' => $ptc,
+                    'prioridade' => $prioridade,
+                    'descricao' => $descricao,
+                    'data_vencimento' => $data,
+                    'usuario' => $usuario
+                )
+            );
+
             $count = 2;
-            $dataHora  = $data_vencimento . ' ' . $tempo_vencimento; 
             while(isset($_POST["usuarios-$count"])){
+                $usuario = $_POST["usuarios-$count"];
                 $dataHora = $_POST["data_entrega-$count"] . ' '. $_POST["tempo_entrega-$count"];
+                $titulo = $_POST["tarefa-$count"];
+                $prioridade = $_POST["prioridade-$count"];
+
+
                 echo $count . ' - '. $_POST["usuarios-$count"] ;
                 echo(' - ' .  $dataHora . PHP_EOL);
+                array_push($dataJson, 
+                    array(
+                        'tarefa' => $titulo,
+                        'prioridade'  => $prioridade,
+                        'ptc' => $ptc, 
+                        'descricao' =>  $descricao,
+                        "usuario" =>$usuario,
+                        "data_vencimento" => $dataHora,   
+                    )
+                );
                 $count++;
             }
-            echo 'não existem mais dados: parou no count' . $count;
+            
+            if(file_put_contents('ptc='.$ptc.'user='.$usuarioSession.'.json', json_encode($dataJson))){
+
+            }
+
+
+            // echo json_encode($dataJson);
+            // echo PHP_EOL;
+            // print_r($dataJson);
+            // echo PHP_EOL;
+            unset($dataJson[1]);
+            // print_r($dataJson);
+
+            // echo PHP_EOL;
             
         }else{
             echo json_encode(array(
