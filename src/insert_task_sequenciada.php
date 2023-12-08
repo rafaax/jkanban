@@ -37,15 +37,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         validaData($data);
 
+        $dataJson = array();
+        
         
         if(isset($_POST['usuarios'])){
             $usuarios = $_POST['usuarios'];
             echo '1 - ' .$usuarios . PHP_EOL;
             $count = 2;
+            $dataHora  = $data_vencimento . ' ' . $tempo_vencimento; 
             while(isset($_POST["usuarios-$count"])){
-                echo $count . ' - '. $_POST["usuarios-$count"] . PHP_EOL;
+                $dataHora = $_POST["data_entrega-$count"] . ' '. $_POST["tempo_entrega-$count"];
+                echo $count . ' - '. $_POST["usuarios-$count"] ;
+                echo(' - ' .  $dataHora . PHP_EOL);
                 $count++;
             }
+            echo 'não existem mais dados: parou no count' . $count;
             
         }else{
             echo json_encode(array(

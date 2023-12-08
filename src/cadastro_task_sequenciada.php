@@ -123,17 +123,28 @@
         var title = $('<h5>Step '+ formLine + '</h2>');
 
         var newdiv = $('<div>', { class: 'row' });
+        
         var col1 = $('<div>', { class: 'col-6' });
         col1.append('<div class="form-group">' +
-                        '<label for="tarefa-' + formLine + '" class="control-label mb-1">Titulo da Tarefa</label>' +
-                        '<input id="tarefa-' + formLine + '" name="tarefa' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>' +
-                    '</div>');
+            '<label for="tarefa-' + formLine + '" class="control-label mb-1">Titulo da Tarefa</label>' +
+            '<input id="tarefa-' + formLine + '" name="tarefa' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>' +
+            '</div>'
+        );
 
-        var col2 = $('<div>', { class: 'col-6' });
-        col2.append('<div class="form-group">' +
-                        '<label for="ptc-' + formLine + '" class="control-label mb-1">Identificador do PTC</label>' +
-                        '<input id="ptc-' + formLine + '" name="ptc' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="PTC" required>' +
-                    '</div>');
+        
+        var col2 = $('<div>', {class: 'col-2'});
+        col2.append(' <div class="form-group">' +
+            '<label for="data_entrega-'+ formLine + '" class="control-label mb-1">Data da entrega da tarefa</label>' +
+            '<input id="data_entrega-' + formLine + '" name="data_entrega-'+ formLine + '" type="date" class="form-control" required>' +
+            '</div></div>'
+        )
+
+        var col2_2 = $('<div>', {class: 'col-2'});
+        col2_2.append(' <div class="form-group">' +
+            '<label for="tempo_entrega-'+ formLine + '" class="control-label mb-1"></label>' +
+            '<input id="tempo_entrega-' + formLine + '" name="tempo_entrega-'+ formLine + '" type="time" class="form-control">' +
+            '</div></div>'
+        )
 
         var col3 = $('<div>', { class: 'col-6' });
         col3.append('<div class="form-group">' +
@@ -161,7 +172,7 @@
     
 
         
-        newdiv.append(hr, title,  col1, col2, col3, col4, p);
+        newdiv.append(hr, title,  col1, col2, col2_2, col3, col4, p);
 
         $('#' + divName).append(newdiv);
         formLine++;
