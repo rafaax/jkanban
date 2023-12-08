@@ -115,30 +115,30 @@
 
     $(document).ready(function(){
 
-    var formLine = 1;
+    var formLine = 2;
 
     function addInput(divName) {
         var hr = $('<hr>');
         var p = $('<p>');
-        var title = $('<h5>Proximo passo '+ formLine + '</h2>');
+        var title = $('<h5>Step '+ formLine + '</h2>');
 
         var newdiv = $('<div>', { class: 'row' });
         var col1 = $('<div>', { class: 'col-6' });
         col1.append('<div class="form-group">' +
-                        '<label for="tarefa' + formLine + '" class="control-label mb-1">Titulo da Tarefa</label>' +
-                        '<input id="tarefa' + formLine + '" name="tarefa' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>' +
+                        '<label for="tarefa-' + formLine + '" class="control-label mb-1">Titulo da Tarefa</label>' +
+                        '<input id="tarefa-' + formLine + '" name="tarefa' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="Tarefa" required>' +
                     '</div>');
 
         var col2 = $('<div>', { class: 'col-6' });
         col2.append('<div class="form-group">' +
-                        '<label for="ptc' + formLine + '" class="control-label mb-1">Identificador do PTC</label>' +
-                        '<input id="ptc' + formLine + '" name="ptc' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="PTC" required>' +
+                        '<label for="ptc-' + formLine + '" class="control-label mb-1">Identificador do PTC</label>' +
+                        '<input id="ptc-' + formLine + '" name="ptc' + formLine + '" class="form-control" type="text" aria-required="true" aria-invalid="false" placeholder="PTC" required>' +
                     '</div>');
 
         var col3 = $('<div>', { class: 'col-6' });
         col3.append('<div class="form-group">' +
-            '<label for="prioridade' + formLine + '" class="control-label mb-1">Prioridade</label>' +
-            '<select name="prioridade' + formLine + '" id="prioridade' + formLine + '" class="form-control">' 
+            '<label for="prioridade-' + formLine + '" class="control-label mb-1">Prioridade</label>' +
+            '<select name="prioridade-' + formLine + '" id="prioridade-' + formLine + '" class="form-control">' 
                 <?php $sql = "SELECT id, prioridade from prioridade order by id asc ";
                 $query = mysqli_query($conexao, $sql);
                 while($array = mysqli_fetch_assoc($query)){ 
@@ -150,7 +150,7 @@
 
         var col4 = $('<div>', { class: 'col-6' });
         col4.append('<label for="multiple-select-field' + formLine + '" class="control-label mb-1">Atribuir para:</label>' +
-            '<select class="form-select" name="usuarios' + formLine +'" id="multiple-select-field' + formLine + '" data-placeholder="Usuários">' 
+            '<select class="form-select" name="usuarios-' + formLine +'" id="multiple-select-field' + formLine + '" data-placeholder="Usuários">' 
                 <?php $sql = "SELECT * from usuarios order by nome asc"; 
                 $query = mysqli_query($conexao, $sql); 
                 while($array = mysqli_fetch_array($query)){ 
@@ -201,48 +201,8 @@
                 },
                 success: function (result) {
                     console.log(result);
-                    var json = JSON.parse(result);
+                    // var json = JSON.parse(result);
                     Swal.close();
-                    if(json.erro == false){
-                        let timerInterval;
-                        Swal.fire({
-                            icon: 'success',
-                            title: "Sucesso!",
-                            html: "Fechando em <b></b> milisegundos...",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            didOpen: () => {
-                                Swal.showLoading();
-                                const timer = Swal.getPopup().querySelector("b");
-                                timerInterval = setInterval(() => {
-                                timer.textContent = `${Swal.getTimerLeft()}`;
-                                }, 100);
-                            },
-                            willClose: () => {
-                                clearInterval(timerInterval);
-                            }
-                        }).then((result) => {
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            window.location.href = "http://192.168.0.166/jkanban/";
-                        }
-                        });
-                    }else if(json.erro == true){
-                        Swal.fire({
-                            title: json.msg,
-                            icon: 'error',
-                            allowOutsideClick: () => {
-                                const popup = Swal.getPopup()
-                                popup.classList.remove('swal2-show')
-                                setTimeout(() => {
-                                popup.classList.add('animate__animated', 'animate__headShake')
-                                })
-                                setTimeout(() => {
-                                popup.classList.remove('animate__animated', 'animate__headShake')
-                                }, 500)
-                                return false
-                            }
-                        })
-                    }
                 }
             })
         });
