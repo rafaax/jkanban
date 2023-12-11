@@ -220,7 +220,7 @@ $(document).ready(function(){
     }
 
     function alertaAdm(){
-        console.Log(Cookies.get('alertadministrador'));
+        // console.log(Cookies.get('alertadministrador'));
         if(Cookies.get('alertadministrador') == 'true'){
             return false; // faz nada
         }else{
