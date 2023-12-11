@@ -24,6 +24,20 @@ function validaRegistro($task, $source){
     }
 }
 
+function validaJsonRef($task){
+    require 'conexao.php';
+    
+    $sql = "SELECT json_ref from tarefas_criadas where tarefa_id = '$task'";
+    $query = mysqli_query($conexao, $sql);
+    $array = mysqli_fetch_array($query);
+
+    if($array['json_ref'] == null){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function buscaCriador($task_id){
     require 'conexao.php';
     $sql = "SELECT * from tarefas_criadas where tarefa_id = '$task_id'";
@@ -50,7 +64,8 @@ function curlEmail($task,$created_by, $user ){
         ),
     ));
 
-    curl_exec($curl);
+    $ch = curl_exec($curl);
+    // echo $ch;
     curl_close($curl);
 
 }
@@ -80,8 +95,37 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $query = mysqli_query($conexao, $sql);
             if($query){
                 if($json->target == 'tarefas_done'){
-                    $created = buscaCriador($json->task_id);
-                    curlEmail($json->task_id, $created, $usuarioSession);
+                    if(validaJsonRef($json->task_id) != true){
+
+                        $sql = "SELECT json_ref from tarefas_criadas where tarefa_id = $json->task_id";
+                        $query = mysqli_query($conexao, $sql);
+                        $array = mysqli_fetch_array($query);
+
+                        $jsonRef = $array['json_ref'];
+                        $fileGet =  file_get_contents($jsonRef);
+                        echo $jsonRef;
+                        $next_task = json_decode($fileGet, true);
+                        print_r($next_task);
+                        echo $next_task[0]['tarefa'];
+                        unset($next_task[0]);
+                        print_r($next_task);
+                        
+                        if(empty($next_task)){
+                            $sql = "UPDATE tarefas_criadas set json_ref = null where tarefa_id = '$json->task_id'";
+                            mysqli_query($conexao, $sql);
+                            $created = buscaCriador($json->task_id);
+                            curlEmail($json->task_id, $created, $usuarioSession);
+                        }else{
+                            $tasks = array_values($next_task);
+                            print_r($tasks);
+                        }
+                        
+                        
+                    }else{
+                        $created = buscaCriador($json->task_id);
+                        curlEmail($json->task_id, $created, $usuarioSession);
+                    }
+                    
                 }
                 logDragging($usuarioSession, $json->task_id, $json->target, $json->source);
                 retorna(false, 'sem erro');
@@ -94,6 +138,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             retorna(true,'Ocorreu algum erro...');
             die();
         }
+
     }else{
         retorna(true, 'Ocorreu um erro ao encontrar o registro');
         die();

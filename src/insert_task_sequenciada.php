@@ -87,7 +87,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if(file_put_contents("$file.json", json_encode($dataJson))){ // escreve o arquivo
                 $jsonGet= file_get_contents("$file.json");
                 $tasks =json_decode($jsonGet, true);
-                print_r($tasks);
+                
+                // print_r($tasks);
+
+                $task_titulo = $tasks[0]['tarefa'];
+                $task_prioridade = $tasks[0]['prioridade'];
+                $task_descricao = $tasks[0]['descricao'];
+                $task_ptc = $tasks[0]['ptc'];
+                $task_usuario = $tasks[0]['usuario'];
+                $task_data_vencimento = $tasks[0]['data_vencimento'];
+
+                $sql = "INSERT INTO tarefas_criadas(titulo, prioridade, ptc_num, descricao_tarefa, criado_por, usuario_tarefa, data_final, json_ref) 
+                    values ('$task_titulo', '$task_prioridade', '$task_ptc', '$task_descricao' , '$usuarioSession', '$task_usuario', '$task_data_vencimento', '$file.json')";
+                // echo $sql;
+                $query = mysqli_query($conexao, $sql);
+                if($query){
+                    $last_inserted_id = mysqli_insert_id($conexao);
+                    $sql = "INSERT INTO tarefas_todo(tarefa_id) values ('$last_inserted_id')";
+                    $query = mysqli_query($conexao, $sql);
+                }
+                
+                // echo $query;
                 // print_r($tasks[1]);
                 // echo $tasks[1]['tarefa'];
                 unset($tasks[0]);
@@ -95,7 +115,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $tasks = array_values($tasks);
                 print_r($tasks);
                 $tasks = json_encode($tasks);
-                // file_put_contents("jsons/user=$usuarioSession&time=$unix".'.json', $tasks);
+                file_put_contents("$file.json", $tasks);
             }else{
                 echo json_encode(array(
                     'erro' => true,

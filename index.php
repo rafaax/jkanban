@@ -144,20 +144,6 @@ function buscaNomeKanban($user){
                         }?>
                         
                     </div>
-
-                    <!-- editar -->
-                    <div class="formedit">
-                        <span id="msg-edit"></span>
-                        <form id="editevent" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="id" id="id">
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Título</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="title" class="form-control" id="title" placeholder="Título do evento">
-                                </div>
-                            </div>
-                        </form>                            
-                    </div>
                 </div>
             </div>
         </div>

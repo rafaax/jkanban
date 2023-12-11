@@ -209,9 +209,9 @@ $(document).ready(function(){
             data: JSON.stringify(json),
             contentType: "application/json",
             success: function(response) {
-                // console.log(response);
+                console.log(response);
                 var response = JSON.parse(response);
-                console.log(response.erro);
+                // console.log(response.erro);
                 if(response.erro == false){
                 // ainda nao sei oq colocar aqui
                 }
@@ -370,18 +370,15 @@ $(document).ready(function(){
             usuarioSession = parseInt(usuarioSession);
 
             id = parseInt(id); 
-            console.log(usuarioSession + typeof(usuarioSession))
-            console.log(permissoesSession + typeof(permissoesSession))
+            // console.log(usuarioSession + typeof(usuarioSession))
+            // console.log(permissoesSession + typeof(permissoesSession))
 
             if(usuarioSession == id){
-                console.log('entra aq');
                 initKanban();
             }else{
                 if(permissoesSession == 1 && usuarioSession == id){
-                    console.log('entra aq 2')
                     initKanban();
                 }else if(permissoesSession == 1 && usuarioSession != id){
-                    console.log('usuario diferente');
                     initKanban();
                     alertaAdm();
                 }else{
