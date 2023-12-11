@@ -210,11 +210,11 @@ $(document).ready(function(){
             contentType: "application/json",
             success: function(response) {
                 console.log(response);
-                var response = JSON.parse(response);
-                // console.log(response.erro);
-                if(response.erro == false){
-                // ainda nao sei oq colocar aqui
-                }
+                // var response = JSON.parse(response);
+                // // console.log(response.erro);
+                // if(response.erro == false){
+                // // ainda nao sei oq colocar aqui
+                // }
             }
         }); 
     }

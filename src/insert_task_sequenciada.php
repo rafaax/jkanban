@@ -107,15 +107,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     $query = mysqli_query($conexao, $sql);
                 }
                 
-                // echo $query;
-                // print_r($tasks[1]);
-                // echo $tasks[1]['tarefa'];
                 unset($tasks[0]);
-                // print_r($tasks);
                 $tasks = array_values($tasks);
-                print_r($tasks);
+                // print_r($tasks);
                 $tasks = json_encode($tasks);
-                file_put_contents("$file.json", $tasks);
+                if(file_put_contents("$file.json", $tasks)){
+                    echo json_encode(array(
+                        'erro' => false
+                    ));
+                }
+
             }else{
                 echo json_encode(array(
                     'erro' => true,

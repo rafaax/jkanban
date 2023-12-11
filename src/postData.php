@@ -94,33 +94,61 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $sql = "DELETE from $json->source where tarefa_id = '$json->task_id'";
             $query = mysqli_query($conexao, $sql);
             if($query){
-                if($json->target == 'tarefas_done'){
+                if($json->target == 'tarefas_done'){ // executar se o usuario enviar a tarefa para as tarefas finalizadas
                     if(validaJsonRef($json->task_id) != true){
 
-                        $sql = "SELECT json_ref from tarefas_criadas where tarefa_id = $json->task_id";
+                        $sql = "SELECT json_ref from tarefas_criadas where tarefa_id = $json->task_id"; // query pra pegar o caminho do json
                         $query = mysqli_query($conexao, $sql);
-                        $array = mysqli_fetch_array($query);
+                        $array = mysqli_fetch_array($query); 
 
-                        $jsonRef = $array['json_ref'];
-                        $fileGet =  file_get_contents($jsonRef);
-                        echo $jsonRef;
-                        $next_task = json_decode($fileGet, true);
-                        print_r($next_task);
-                        echo $next_task[0]['tarefa'];
-                        unset($next_task[0]);
-                        print_r($next_task);
+                        $jsonRef = $array['json_ref']; // caminho do json
+                        $fileGet =  file_get_contents($jsonRef); // ler o arquivo json
                         
-                        if(empty($next_task)){
-                            $sql = "UPDATE tarefas_criadas set json_ref = null where tarefa_id = '$json->task_id'";
-                            mysqli_query($conexao, $sql);
-                            $created = buscaCriador($json->task_id);
-                            curlEmail($json->task_id, $created, $usuarioSession);
-                        }else{
-                            $tasks = array_values($next_task);
-                            print_r($tasks);
+                        $next_task = json_decode($fileGet, true); // decodificar o json para transformar em array
+                        // print_r($next_task); 
+                        if(!empty($next_task)){
+
+                            // atribuir os dados do array em variáveis
+                            $task_titulo =  $next_task[0]['tarefa']; 
+                            $task_ptc =  $next_task[0]['ptc'];
+                            $task_descricao =  $next_task[0]['descricao'];
+                            $task_data_vencimento =  $next_task[0]['data_vencimento'];
+                            $task_usuario =  $next_task[0]['usuario'];
+                            $task_prioridade = $next_task[0]['prioridade'];
+                            //
+
+                            $sql = "INSERT INTO tarefas_criadas(titulo, prioridade, ptc_num, descricao_tarefa, criado_por, usuario_tarefa, data_final, json_ref) 
+                                values ('$task_titulo', '$task_prioridade', '$task_ptc', '$task_descricao' , '$usuarioSession', '$task_usuario', '$task_data_vencimento', '$jsonRef')";
+                            // echo $sql;
+                            $query = mysqli_query($conexao, $sql);
+                            if($query){
+                                echo 'query executada';
+                                $last_inserted_id = mysqli_insert_id($conexao);
+                                $sql = "INSERT INTO tarefas_todo(tarefa_id) values ('$last_inserted_id')";
+                                $query = mysqli_query($conexao, $sql);
+                            }
+
+
+                            unset($next_task[0]); // remover o objeto de indice 0 -> primeiro, do array
+                            // print_r($next_task); 
+
+                            if(empty($next_task)){ // validar se o array é vazio 
+                                echo 'array esta vazio';
+                                $sql = "UPDATE tarefas_criadas set json_ref = null where tarefa_id = '$json->task_id'"; // COLOCAR NULO
+                                $query = mysqli_query($conexao, $sql); // RODA A QUERY
+
+                                file_put_contents($jsonRef, json_encode($next_task));
+                                // $created = buscaCriador($json->task_id); // 
+                                // curlEmail($json->task_id, $created, $usuarioSession);
+                            }else{ // caso nao for, reindexar o array
+                                $tasks = array_values($next_task);
+                                echo 'array atualizado';
+                                // print_r($tasks); 
+                                file_put_contents($jsonRef, json_encode($tasks));
+                            }
+
                         }
-                        
-                        
+
                     }else{
                         $created = buscaCriador($json->task_id);
                         curlEmail($json->task_id, $created, $usuarioSession);
