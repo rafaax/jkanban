@@ -229,7 +229,7 @@ $(document).ready(function(){
             text: "Como administrador você pode adicionar tarefas à outro usuário que não seja você!",
             icon: "warning"
         });
-        Cookies.set('alertadministrador', 'true', { expires: 1 }) // expira em 1 dia
+        Cookies.set('alertadministrador', 'true', { expires: 7 }) // expira em 7 dia
         }
     }
     
