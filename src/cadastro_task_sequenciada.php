@@ -190,7 +190,6 @@
     });
 
     $('#form_cadastro').on("submit", function(event){
-            console.log(event);
             event.preventDefault();
             $.ajax({
                 method: "POST",

@@ -42,7 +42,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($_POST['usuarios'])){
             $usuario = $_POST['usuarios'];
 
-            $dataJson = array(
+
+            $dataJson = array( // define o array com os dados iniciais = tarefa inicial 
                 0 => array(
                     'tarefa' => $titulo,
                     'ptc' => $ptc,
@@ -53,8 +54,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 )
             );
 
-            $count = 1;
-            while(isset($_POST["usuarios-$count"])){
+
+            $count = 1; // define o count para entrar no while e percorrer o _POST
+            while(isset($_POST["usuarios-$count"])){ // o while vai até aonde exista o _POST['usuarios-x]
+                // define as variaveis para evitar usar concatenacao e não confundir no array push, obs: caso tenha muitos dados pode pesar 
                 $usuario = $_POST["usuarios-$count"];
                 $dataHora = $_POST["data_entrega-$count"] . ' '. $_POST["tempo_entrega-$count"];
                 $titulo = $_POST["tarefa-$count"];
@@ -62,6 +65,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 // echo $count . ' - '. $_POST["usuarios-$count"] ;
                 
+                // array manipulator para inserir o array novo no array dataJson para tratar posteriormente
                 array_push($dataJson, 
                     array(
                         'tarefa' => $titulo,
@@ -75,19 +79,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $count++;
             }
             
-            if(file_put_contents('jsons/ptc='.$ptc.'user='.$usuarioSession.'.json', json_encode($dataJson))){
-                $jsonGet= file_get_contents('jsons/ptc='.$ptc.'user='.$usuarioSession.'.json');
-                
+            $timestamp = getdate();
+            $unix =  $timestamp[0];
+            $path = "json";
+            $file = "$path/user=$usuarioSession&time=$unix";
+
+            if(file_put_contents("$file.json", json_encode($dataJson))){ // escreve o arquivo
+                $jsonGet= file_get_contents("$file.json");
                 $tasks =json_decode($jsonGet, true);
                 print_r($tasks);
                 // print_r($tasks[1]);
                 // echo $tasks[1]['tarefa'];
                 unset($tasks[0]);
-                print_r($tasks);
+                // print_r($tasks);
                 $tasks = array_values($tasks);
                 print_r($tasks);
                 $tasks = json_encode($tasks);
-                file_put_contents('ptc='.$ptc.'user='.$usuarioSession.'.json', json_encode($tasks));
+                // file_put_contents("jsons/user=$usuarioSession&time=$unix".'.json', $tasks);
+            }else{
+                echo json_encode(array(
+                    'erro' => true,
+                    'msg' => 'Ocorreu algum erro...'
+                ));
             }
 
         }else{
