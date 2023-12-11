@@ -1,5 +1,6 @@
 <?php require 'conexao.php';?>
 
+<script src="assets/js/register-task-step.js"></script>
 <div class="card">
     <div class="card-header">
         Cadastro de Tarefa
@@ -113,7 +114,7 @@
 
 <script>
 
-    $(document).ready(function(){
+$(document).ready(function(){
 
     var formLine = 1;
 
@@ -159,7 +160,7 @@
                 <?php } ?> +
             '</select></div>');
 
-        var col4 = $('<div>', { class: 'col-6' });
+       var col4 = $('<div>', { class: 'col-6' });
         col4.append('<label for="multiple-select-field' + formLine + '" class="control-label mb-1">Atribuir para:</label>' +
             '<select class="form-select" name="usuarios-' + formLine +'" id="multiple-select-field' + formLine + '" data-placeholder="Usuários">' 
                 <?php $sql = "SELECT * from usuarios order by nome asc"; 
@@ -171,49 +172,18 @@
                 <?php } ?> + '</select></div>');
     
 
-        
         newdiv.append(hr, title,  col1, col2, col2_2, col3, col4, p);
-
         $('#' + divName).append(newdiv);
         formLine++;
     }
+
 
     $('#adicionarStep').on("click", function(){
         addInput('plus');
     });
 
-    $('#multiple-select-field' ).select2( {
-        theme: "bootstrap-5",
-        width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-        placeholder: $( this ).data( 'placeholder' ),
-        closeOnSelect: false,
-    });
+    
+});
 
-    $('#form_cadastro').on("submit", function(event){
-            event.preventDefault();
-            $.ajax({
-                method: "POST",
-                url: "src/insert_task_sequenciada.php",
-                data: new FormData(this),
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-                    Swal.fire({
-                        title: 'Aguarde...',
-                        text: 'Cadastrando...',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        showConfirmButton: false,
-                        willOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                },
-                success: function (result) {
-                    console.log(result);
-                    // var json = JSON.parse(result);
-                    Swal.close();
-                }
-            })
-        });
-    });
+
+</script>

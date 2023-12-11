@@ -13,7 +13,6 @@ function buscaNomeKanban($user){
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8" />
-
 <title>Kanban</title>
 <link rel="stylesheet" href="assets/js/jkanban.min.css"/>
 <link rel="stylesheet" href="assets/css/style_kanban.css"/>
@@ -22,8 +21,8 @@ function buscaNomeKanban($user){
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-    
-  </head>
+<script src="assets/js/renderizar_cadastro.js"></script>
+</head>
   <body>
     <?php
     if(isset($_GET['cadastro'])){
@@ -31,26 +30,31 @@ function buscaNomeKanban($user){
       
       <?php
         if($_GET['cadastro'] != 'sequencial' && $_GET['cadastro'] != 'padrao'){
-          echo '
-          <div class="col-sm-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Tarefa padrão</h5>
-                <p class="card-text">Tarefa atrelada a um ou mais usuários.</p>
-                <a href="index?cadastro=padrao" class="btn btn-primary">Cadastrar</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Tarefa com Sequência</h5>
-                <p class="card-text">Tarefa step-by-step, com 1 ou mais passos, no qual o segundo depende do primeiro para iniciar.</p>
-                <a href="index?cadastro=sequencial" class="btn btn-primary">Cadastrar</a>
-              </div>
-            </div>
-          </div>
-        ';
+         ?><div id="container"></div>
+         <script>renderizarTela()</script>
+         <?php
+        //  if($_GET['cadastro'] != 'sequencial' && $_GET['cadastro'] != 'padrao'){
+        //   echo '
+        //   <div class="col-sm-3">
+        //     <div class="card">
+        //       <div class="card-body">
+        //         <h5 class="card-title">Tarefa padrão</h5>
+        //         <p class="card-text">Tarefa atrelada a um ou mais usuários.</p>
+        //         <a href="index?cadastro=padrao" class="btn btn-primary">Cadastrar</a>
+        //       </div>
+        //     </div>
+        //   </div>
+        //   <div class="col-sm-3">
+        //     <div class="card">
+        //       <div class="card-body">
+        //         <h5 class="card-title">Tarefa com Sequência</h5>
+        //         <p class="card-text">Tarefa step-by-step, com 1 ou mais passos, no qual o segundo depende do primeiro para iniciar.</p>
+        //         <a href="index?cadastro=sequencial" class="btn btn-primary">Cadastrar</a>
+        //       </div>
+        //     </div>
+        //   </div>
+        // ';
+        // }
         }
 
         if($_GET['cadastro'] == 'sequencial'){
@@ -75,7 +79,7 @@ function buscaNomeKanban($user){
           <h3>Visualizando o kanban de: '. buscaNomeKanban($_GET['id']).'</h3>
         </header>';
         echo '<div style="position: absolute; bottom: 0.8%; right:6%;">
-          <a href="index"><img class="logout" src="assets/home.png"></img></a>
+          <a href="index"><img class="logout" src="assets/imgs/home.png"></img></a>
         </div>';
       }
       ?>
@@ -86,10 +90,10 @@ function buscaNomeKanban($user){
       </div>
       
       <div style="position: absolute; bottom: 0.8%; right:1.6%;">
-        <a href="src/logout.php"><img class="logout" src="assets/logout.png"></img></a>
+        <a href="src/logout.php"><img class="logout" src="assets/imgs/logout.png"></img></a>
       </div>
       <div style="position: absolute; bottom: 10%; right:2%;">
-        <span id="calendario"><img class="logout" src="assets/calendar.png"></img></span>
+        <span id="calendario"><img class="logout" src="assets/imgs/calendar.png"></img></span>
       </div>
       <?php if($permissoesSession == 1){
         echo '<span class="button" id="adicionar-tarefa">Adicione uma tarefa!</span>';

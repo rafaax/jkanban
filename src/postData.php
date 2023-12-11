@@ -75,7 +75,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(validaRegistro($json->task_id, $json->source)){
         
         $sql = "INSERT INTO $json->target(tarefa_id) values ('$json->task_id')";
-        // echo $sql;
         if(mysqli_query($conexao, $sql)){
             $sql = "DELETE from $json->source where tarefa_id = '$json->task_id'";
             $query = mysqli_query($conexao, $sql);

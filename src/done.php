@@ -3,14 +3,7 @@
 require 'conexao.php';
 $client_data = file_get_contents("php://input");
 $json = json_decode($client_data);
-// file_put_contents('logconcluidos.txt', file_get_contents("php://input"));
 $user = $json->user_id;
-
-
-// $sql = "SELECT td.tarefa_id, tc.titulo, (select prioridade from prioridade where id = tc.prioridade) as prioridade from tarefas_done td
-//     inner join tarefas_criadas tc on tc.tarefa_id = td.tarefa_id
-//         where tc.usuario_tarefa = '$user'";
-// echo $sql;
 
 $sql = "SELECT td.tarefa_id, tc.titulo, tc.ptc_num, tc.data_criada, tc.descricao_tarefa, tc.data_final, tc.prioridade as prioridade_id, 
         (SELECT login from usuarios where id = tc.criado_por) as created_by,  
