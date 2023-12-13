@@ -3,3 +3,4 @@ assets/js/multiselect/
 vendor/composer/
 vendor/phpmailer/
 chaves.php
+template.html

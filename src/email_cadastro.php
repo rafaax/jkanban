@@ -6,45 +6,26 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-function buscaHorarioCreate($task_id){
+function buscaNomeCriador($id){
     require 'conexao.php';
-    $sql = "SELECT * from logs where task_id = $task_id and source = 'create' order by id desc limit 1";
+
+    $sql = "SELECT * from usuarios where id = $id";
     $query = mysqli_query($conexao, $sql);
     $array = mysqli_fetch_array($query);
 
-    return $array['data'];
+    return $array['nome'] . ' ' . $array['sobrenome'];
 
 }
 
-function buscaHorarioProgress($task_id){
+function buscaPrioridade($id){
     require 'conexao.php';
-    $sql = "SELECT * from logs where task_id = $task_id and source = 'tarefas_todo' order by id desc limit 1";
+    
+    $sql = "SELECT * from prioridade where id = $id";
     $query = mysqli_query($conexao, $sql);
     $array = mysqli_fetch_array($query);
 
-    return $array['data'];
-}
+    return $array['prioridade'];
 
-function buscaNomeTarefa($task_id){
-    require 'conexao.php';
-    $sql = "select titulo, ptc_num from tarefas_criadas where tarefa_id = $task_id";
-    $query = mysqli_query($conexao, $sql);
-    $array = mysqli_fetch_array($query);
-
-    $titulo = $array['titulo'];
-    $ptc_num = $array['ptc_num'];
-
-    return "$titulo - PTC: $ptc_num";
-}
-
-function buscaUsuario($usuario){
-    require 'conexao.php';
-
-    $sql = "SELECT * from usuarios where id = $usuario";
-    $query = mysqli_query($conexao, $sql);
-    $array = mysqli_fetch_array($query);
-
-    return $array['login'];
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -61,9 +42,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
+    // print_r($client_data);
+    $tarefa=  $json->tarefa;
+    $ptc = $json->ptc;
+    $descricao = $json->descricao;
+    $prioridade = $json->prioridade;
+    $criador = $json->criador;
+    $usuario = $json->usuario;
+    $data_criada = $json->data_criada;
+    $data_final = $json->data_final;
+
 
     $mail = new PHPMailer();
-
     $mail->CharSet = "UTF-8";
     $mail->SMTPDebug = 0;
     $mail->Debugoutput = 'html';
@@ -76,44 +66,44 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $mail->Port = $portsmtp;
     $mail->SMTPOptions = $smtpoptions;
 
-    $sql = "SELECT * from usuarios where id = $json->criador";
+    $sql = "SELECT * from usuarios where id = $usuario";
     $query = mysqli_query($conexao, $sql);
     $result = mysqli_fetch_assoc($query);
 
     $cc_email = $result['email'];
     $nome = $result['nome'];
     $sobrenome = $result['sobrenome'];
-    $tarefa_nome = buscaNomeTarefa($json->tarefa);
 
     $mail->addCC($cc_email, "$nome $sobrenome");
     $mail->setFrom('vetorian@vetorian.com');
     $mail->addAddress($cc_email);
     $mail->isHTML(true);
-    $mail->Subject =  $tarefa_nome;
+    $mail->Subject =  'Nova Tarefa - Engedoc';
     
     $sql = "SELECT html from email_template where tipo = 'TAREFA_CRIADA'";
     $query = mysqli_query($conexao, $sql);
     $array = mysqli_fetch_assoc($query);
-    $body = $array['html'];
+    $body = $array['html']; // pegando o template do email
 
-    $horario_cadastro = buscaHorarioCreate($json->tarefa);
-    $horario_inicio = buscaHorarioProgress($json->tarefa);
 
-    $horario_cadastro = new DateTime($horario_cadastro);
-    $horario_inicio = new DateTime($horario_inicio);
+    $horario_cadastro = new DateTime($data_criada);
+    $horario_final = new DateTime($data_final);
 
     $horario_cadastro = $horario_cadastro->format('d/m/Y H:i:s');
-    $horario_inicio = $horario_inicio->format('d/m/Y H:i:s');
+    $horario_final = $horario_final->format('d/m/Y H:i:s');
+
+    $criador = buscaNomeCriador($criador);
+    $prioridade = buscaPrioridade($prioridade);
 
 
     $arrayHtml = array(
-        "%titulo%" => ,
-        "%prioridade%" => $tarefa_nome,
-        "%ptc%" => ,
-        "%descricao%" => "Tarefa foi cadastrada: <strong> $horario_cadastro </strong>",
-        "%criador%" => "Tarefa foi iniciada: <strong>$horario_inicio</strong>",
-        "%data_criada%" => "Tarefa foi iniciada: <strong>$horario_inicio</strong>",
-        "%data_final%" => "Tarefa foi iniciada: <strong>$horario_inicio</strong>"
+        "%titulo%" => $tarefa,
+        "%prioridade%" => $prioridade,
+        "%ptc%" => $ptc,
+        "%descricao%" => $descricao,
+        "%criador%" => $criador,
+        "%data_criada%" => $horario_cadastro,
+        "%data_final%" => $horario_final
     );
 
     $mail->Body = strtr($body,$arrayHtml);
