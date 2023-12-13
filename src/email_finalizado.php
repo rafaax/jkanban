@@ -83,14 +83,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $cc_email = $result['email'];
     $nome = $result['nome'];
     $sobrenome = $result['sobrenome'];
+    $tarefa_nome = buscaNomeTarefa($json->tarefa);
 
     $mail->addCC($cc_email, "$nome $sobrenome");
     $mail->setFrom('vetorian@vetorian.com');
     $mail->addAddress($cc_email);
     $mail->isHTML(true);
-    $mail->Subject = buscaNomeTarefa($json->tarefa) ;
+    $mail->Subject =  $tarefa_nome;
     
-    $sql = "SELECT html from email_template where tipo = 'TAREFA_FINALIZADA'";
+    $sql = "SELECT html from email_template where tipo = 'TAREFA_FINALIZADA_2'";
     $query = mysqli_query($conexao, $sql);
     $array = mysqli_fetch_assoc($query);
     $body = $array['html'];
@@ -107,6 +108,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $arrayHtml = array(
         "%user%" => buscaUsuario($json->usuario),
+        "%task%" => $tarefa_nome,
         "%content%" => "Tarefa foi cadastrada: <strong> $horario_cadastro </strong>",
         "%content2%" => "Tarefa foi iniciada: <strong>$horario_inicio</strong>",
     );
