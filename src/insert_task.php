@@ -23,6 +23,42 @@ function validaData($data_post){
     }
 }
 
+
+function curlEmail($task_id){
+    require 'conexao.php';
+
+    $sql = "SELECT * from tarefas_criadas where tarefa_id = $task_id";
+    $query = mysqli_query($conexao, $sql);
+    
+    $array = mysqli_fetch_array($query);
+
+    $arrayPost = array(
+        'tarefa' => $array['titulo'],
+        'ptc' => $array['ptc_num'],
+        'descricao' => $array['descricao_tarefa'],
+        'prioridade' => $array['prioridade'],
+        'criador' => $array['criado_por'],
+        'usuario' => $array['usuario_tarefa'],
+        'data_criada' => $array['data_criada'],
+        'data_final' => $array['data_final']
+    );
+
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://127.0.0.1/jkanban/src/email_cadastro.php',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($arrayPost),
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+        ),
+    ));
+
+    $ch = curl_exec($curl);
+    // echo $ch;
+    curl_close($curl);
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_POST['tarefa']) && isset($_POST['ptc']) && isset($_POST['prioridade']) && isset($_POST['descricao'])){
@@ -53,6 +89,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         $query = mysqli_query($conexao, $sql);
 
                         if($query){
+                            curlEmail($last_inserted_id);
                             logDragging($usuarioSession, $last_inserted_id, 'tarefas_todo', 'create');
                         }else{
                             echo json_encode(array(
