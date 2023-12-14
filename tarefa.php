@@ -71,7 +71,7 @@ if(mysqli_num_rows($query) > 0){
 											<div class="col-md-12">
 												<div class="form-group">
                                                     Redirecionar tarefa para:
-													<select class="form-control" name="usuarios" id="multiple-select-field" data-placeholder="Usuários">
+													<select class="form-control" name="usuario" id="multiple-select-field">
                                                         <?php 
                                                         
                                                         $sql = "SELECT * from usuarios order by nome asc"; 
@@ -149,6 +149,7 @@ if(mysqli_num_rows($query) > 0){
 </html>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js//contest-task.js"></script>
 
 
