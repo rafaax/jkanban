@@ -3,7 +3,13 @@ $(document).ready(function(){
     $('#contest_task').on("submit", function(event){
         event.preventDefault();
         if ($("#message").val() === "") {
+            
             $("#message").addClass("piscar-vermelho");
+
+            setTimeout(function() {
+                $("#message").removeClass("piscar-vermelho");
+            }, 10*1000);
+                
             Swal.fire({
                 title: "Erro!",
                 text: "Você não pode enviar uma contestação sem ao menos dar uma justificativa!",
