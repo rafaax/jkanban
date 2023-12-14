@@ -2,10 +2,39 @@
 require 'src/conexao.php';
 require 'src/validacao.php';
 
-if(!isset($_GET['id'])){
-    exit;
+function LocationIndex(){
+	header('Location: index');
 }
-$idGet = $_GET['id'];
+
+function getId(){
+	if(isset($_GET['id'])){
+		if(is_numeric($_GET['id'])){
+			return $_GET['id'];
+		}else{
+			LocationIndex();
+		}
+	}else{
+		LocationIndex();
+	}
+}
+
+
+$idGet = getId();
+
+$sql = "SELECT * from tarefas_criadas where tarefa_id = '$idGet' LIMIT 1";
+echo $sql . '<br>';
+$query = mysqli_query($conexao, $sql);
+echo mysqli_num_rows($query); 
+if(mysqli_num_rows($query) > 0){
+	$array = mysqli_fetch_array($query);
+	if($array['usuario_tarefa'] !== $usuarioSession){
+		exit();
+	}
+}else{
+	LocationIndex();
+}
+
+
 ?>
 <!doctype html>
 <html lang="pt-br">
