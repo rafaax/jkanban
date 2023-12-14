@@ -28,18 +28,18 @@ $(document).ready(function(){
             data: new FormData(this),
             contentType: false,
             processData: false,
-            beforeSend: function () {
-                Swal.fire({
-                    title: 'Aguarde...',
-                    text: 'Cadastrando...',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showConfirmButton: false,
-                    willOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-            },
+            // beforeSend: function () {
+            //     Swal.fire({
+            //         title: 'Aguarde...',
+            //         text: 'Cadastrando...',
+            //         allowOutsideClick: false,
+            //         allowEscapeKey: false,
+            //         showConfirmButton: false,
+            //         willOpen: () => {
+            //             Swal.showLoading();
+            //         }
+            //     });
+            // },
             success: function (result) {
 
 
