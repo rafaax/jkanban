@@ -88,7 +88,7 @@ if(mysqli_num_rows($query) > 0){
                                                         
                                                         $sql = "SELECT * from usuarios order by nome asc"; 
                                                         $query = mysqli_query($conexao, $sql);
-                                                        echo '<option>Apenas cancelar</option>';
+                                                        echo '<option value="NULO">Apenas cancelar</option>';
                                                         while($array = mysqli_fetch_array($query)){
                                                             $login = $array['login'];
                                                             $usuario_id = $array['id'];
@@ -100,7 +100,7 @@ if(mysqli_num_rows($query) > 0){
 											</div>
 											<div class="col-md-12">
 												<div class="form-group">
-													<textarea name="message" class="form-control" id="message" cols="30" rows="7" placeholder="Mensagem"></textarea>
+													<textarea name="msg" class="form-control" id="message" cols="30" rows="7" placeholder="Mensagem"></textarea>
 												</div>
 											</div>
 											<div class="col-md-12">
