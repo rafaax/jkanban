@@ -53,6 +53,18 @@ if(mysqli_num_rows($query) > 0){
 	<link rel="stylesheet" href="assets/css/style2.css">
 	</head>
 	<body>
+	<style>
+	.piscar-vermelho {
+		border: 2px solid red;
+		animation: blink 0.5s infinite alternate; /* Adiciona um efeito de piscar */
+	}
+
+	@keyframes blink {
+		to {
+		border-color: transparent; /* Muda a cor para transparente para criar o efeito de piscar */
+		}
+	}
+	</style>
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">

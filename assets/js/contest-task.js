@@ -2,6 +2,20 @@ $(document).ready(function(){
 
     $('#contest_task').on("submit", function(event){
         event.preventDefault();
+        if ($("#message").val() === "") {
+            $("#message").addClass("piscar-vermelho");
+            Swal.fire({
+                title: "Escreva uma mensagem!",
+                text: "Você não pode enviar uma contestação sem ao menos dar uma justificativa!",
+                icon: "warning"
+            });
+            
+            event.preventDefault(); // Impede o envio do formulário
+            return;
+        }else{
+            $("#message").removeClass("piscar-vermelho");
+        }
+        
         $.ajax({
             method: "POST",
             url: "src/contest_task.php",
@@ -21,6 +35,9 @@ $(document).ready(function(){
                 });
             },
             success: function (result) {
+
+
+                
                 console.log(result);
                 // var json = JSON.parse(result);
                 // Swal.close();
