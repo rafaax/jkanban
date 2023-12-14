@@ -11,8 +11,30 @@ function retornaErro($msg){
     exit();
 }
 
-function curlEmail(){
+function curlEmail($task_id, $user, $msg){
+    
+    require 'conexao.php';
 
+    $array = array(
+        'tarefa_id' => $task_id,
+        'user' => $user,
+        'msg' => $msg
+    );
+
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://127.0.0.1/jkanban/src/email_recusado.php',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($array),
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+        ),
+    ));
+
+    $ch = curl_exec($curl);
+    echo $ch;
+    curl_close($curl);
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -49,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             'msg' => 'Sua contestação foi bem sucedida!'
                         ));
 
-                        curlEmail();
+                        curlEmail($tarefa_id, $usuarioSession, $mensagem);
                     }else{
                         retornaErro("Ocorreu algum erro..");    
                     }
