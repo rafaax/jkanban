@@ -18,18 +18,24 @@ function getId(){
 	}
 }
 
-
 $idGet = getId();
 
-$sql = "SELECT * from tarefas_criadas where tarefa_id = '$idGet' LIMIT 1";
-echo $sql . '<br>';
+$sql = "SELECT tc.tarefa_id, tc.usuario_tarefa, tc.titulo, tc.data_criada, tc.data_final,
+	(SELECT prioridade from prioridade where id = tc.prioridade) as prioridade,  
+	(SELECT CONCAT(`nome`, ' ', `sobrenome`) FROM usuarios where id = tc.criado_por) as criador,
+	(SELECT email from usuarios where id = tc.criado_por) as criador_email
+	from tarefas_criadas tc where tarefa_id = '$idGet' LIMIT 1";
 $query = mysqli_query($conexao, $sql);
-echo mysqli_num_rows($query); 
 if(mysqli_num_rows($query) > 0){
 	$array = mysqli_fetch_array($query);
 	if($array['usuario_tarefa'] !== $usuarioSession){
 		exit();
 	}
+	$titulo_tarefa = $array['titulo'];
+	$prioridade = $array['prioridade'];
+	$criado_por = $array['criador'];
+	$data_final = $array['data_final'];
+	$criador_email = $array['criador_email'];
 }else{
 	LocationIndex();
 }
@@ -103,7 +109,7 @@ if(mysqli_num_rows($query) > 0){
 				        			<span class="fa fa-envelope"></span>
 				        		</div>
 				        		<div class="text pl-3">
-					            <p><span>Tarefa:</span> </p>
+					            <p><span>Tarefa:</span> <?=$titulo_tarefa?></p>
 					          </div>
 				          </div>
 				        	<div class="dbox w-100 d-flex align-items-center">
@@ -111,7 +117,7 @@ if(mysqli_num_rows($query) > 0){
 				        			<span class="fa fa-exclamation"></span>
 				        		</div>
 				        		<div class="text pl-3">
-					            <p><span>Prioridade:</span> </p>
+					            <p><span>Prioridade:</span> <?=$prioridade?></p>
 					          </div>
 				          </div>
 				        	<div class="dbox w-100 d-flex align-items-center">
@@ -119,7 +125,7 @@ if(mysqli_num_rows($query) > 0){
 				        			<span class="fa fa-paper-plane"></span>
 				        		</div>
 				        		<div class="text pl-3">
-					            <p><span>Pedido por:</span> <a href="mailto:"></a></p>
+					            <p><span>Pedido por:</span> <a href="mailto:<?=$criador_email?>"><?=$criado_por?></a></p>
 					          </div>
 				          </div>
 				        	<div class="dbox w-100 d-flex align-items-center">
@@ -127,7 +133,7 @@ if(mysqli_num_rows($query) > 0){
 				        			<span class="fa fa-calendar"></span>
 				        		</div>
 				        		<div class="text pl-3">
-					            <p><span>Data Final:</span></p>
+					            <p><span>Data Final:</span> <?=date('d/m/Y H:i:s', strtotime($data_final))?></p>
 					          </div>
 				          </div>
 			          </div>
@@ -143,5 +149,6 @@ if(mysqli_num_rows($query) > 0){
 </html>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="assets/js//contest-task.js"></script>
 
 
