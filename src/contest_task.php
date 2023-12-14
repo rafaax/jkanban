@@ -39,13 +39,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $query = mysqli_query($conexao, $sql);
                 if($query){
                     //fazer aqui o envio de email para o criador da tarefa sobre a contestação
-                    $sql = "DELETE FROM tarefas_todo where tarefa_id = $tarefa_id";
-                    $query = mysqli_query($conexao, $sql);
-                    echo json_encode(array(
-                        'erro' => false,
-                        'msg' => 'Sua contestação foi bem sucedida!'
-                    ));
-
+                    $sql2 = "DELETE FROM tarefas_todo where tarefa_id = $tarefa_id";
+                    $query2 = mysqli_query($conexao, $sql2);
+                    if($query2){
+                        echo json_encode(array(
+                            'erro' => false,
+                            'msg' => 'Sua contestação foi bem sucedida!'
+                        ));
+                    }else{
+                        retornaErro("Ocorreu algum erro..");    
+                    }
                 }else{
                     retornaErro("Ocorreu algum erro..");
                 }
