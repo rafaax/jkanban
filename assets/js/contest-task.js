@@ -5,12 +5,12 @@ $(document).ready(function(){
         if ($("#message").val() === "") {
             $("#message").addClass("piscar-vermelho");
             Swal.fire({
-                title: "Escreva uma mensagem!",
+                title: "Erro!",
                 text: "Você não pode enviar uma contestação sem ao menos dar uma justificativa!",
                 icon: "warning"
             });
             
-            event.preventDefault(); // Impede o envio do formulário
+            event.preventDefault();
             return;
         }else{
             $("#message").removeClass("piscar-vermelho");
