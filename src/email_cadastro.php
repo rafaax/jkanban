@@ -43,6 +43,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
     // print_r($client_data);
+    $tarefa_id = $json->tarefa_id;
     $tarefa=  $json->tarefa;
     $ptc = $json->ptc;
     $descricao = $json->descricao;
@@ -103,7 +104,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         "%descricao%" => $descricao,
         "%criador%" => $criador,
         "%data_criada%" => $horario_cadastro,
-        "%data_final%" => $horario_final
+        "%data_final%" => $horario_final,
+        "%link%" => '192.168.0.166/jkanban/tarefa.php?id=' . $tarefa_id,
     );
 
     $mail->Body = strtr($body,$arrayHtml);

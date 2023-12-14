@@ -33,6 +33,7 @@ function curlEmail($task_id){
     $array = mysqli_fetch_array($query);
 
     $arrayPost = array(
+        'tarefa_id' => $task_id,
         'tarefa' => $array['titulo'],
         'ptc' => $array['ptc_num'],
         'descricao' => $array['descricao_tarefa'],
