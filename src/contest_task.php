@@ -11,7 +11,9 @@ function retornaErro($msg){
     exit();
 }
 
+function curlEmail(){
 
+}
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if(isset($_POST['usuario']) && isset($_POST['msg']) && isset($_POST['task_id'])){
@@ -46,6 +48,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             'erro' => false,
                             'msg' => 'Sua contestação foi bem sucedida!'
                         ));
+
+                        curlEmail();
                     }else{
                         retornaErro("Ocorreu algum erro..");    
                     }
