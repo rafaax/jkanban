@@ -66,7 +66,7 @@ if(mysqli_num_rows($query) > 0){
 											class="header"><a target="_blank" style="text-decoration:none" href="https://engedoc.com.br/calendario"><img border="0" vspace="0" hspace="0" src="https://engedoc.com.br/images/engedoc_logo.png" width="200" height="50" alt="Logo" title="Logo" style="color:#000;font-size:10px;margin:0;padding:0;outline:0;text-decoration:none;-ms-interpolation-mode:bicubic;border:none;display:block"></a></td>
 									</tr>
 									<br>
-									<form id="contactForm">
+									<form id="contest_task">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
