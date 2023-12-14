@@ -79,6 +79,7 @@ if(mysqli_num_rows($query) > 0){
 									</tr>
 									<br>
 									<form id="contest_task">
+										<input type="text" value="<?=$idGet?>" name="task_id" style="display:none">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
