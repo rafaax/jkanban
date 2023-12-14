@@ -1,7 +1,7 @@
 <?php
 include_once 'validacao.php';
 include_once 'conexao.php';
-
+date_default_timezone_set('America/Sao_Paulo');
 $idGet = $_GET['id'];
 ?>
 <!DOCTYPE html>
@@ -12,12 +12,8 @@ $idGet = $_GET['id'];
 <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <?php 
-
-date_default_timezone_set('America/Sao_Paulo');
 
 function diferencaEntreDatasSegundos($dataMenor, $dataMaior){
     $datetime1 = strtotime($dataMaior);
@@ -106,34 +102,13 @@ while($array = mysqli_fetch_array($query, MYSQLI_ASSOC)){
         echo '</div>';
     ?>
 </body>
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="../assets/js/iframe_fn.js"></script>
 <script>
 
-    function pageScroll(count) {
-            count = parseInt(count);
-            if(count > 3){
-                window.scrollBy(0,1);
-                scrolldelay = setTimeout(pageScroll,100, count);
-                setInterval('autoRefresh()', (count * 5)*1000);
-            }else{
-                setInterval('autoRefresh()', 5000);
-            }   
-        }
-    function autoRefresh() {
-        window.location = window.location.href;
-    }
-    
     var count = "<?=$count?>";
     var count = parseInt(count);
     pageScroll(count);
-
-    $(function() {
-        $('.tooltip-9').tooltip({
-            track: true,
-            hide: {
-                effect: "explode",
-                delay: 250
-            }
-        });
-    });
 
 </script>
