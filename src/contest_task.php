@@ -62,9 +62,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $sql = "INSERT INTO contestacoes(user, msg, task_id, redirecionado) values ('$usuarioSession', '$mensagem','$tarefa_id','$usuario')";
                 $query = mysqli_query($conexao, $sql);
                 if($query){
-                    //fazer aqui o envio de email para o criador da tarefa sobre a contestação
-                    $sql2 = "DELETE FROM tarefas_todo where tarefa_id = $tarefa_id";
-                    $query2 = mysqli_query($conexao, $sql2);
+                    if($usuario != null){
+                        $sql2 = "UPDATE tarefas_criadas set usuario_tarefa = $usuario";
+                        $query2 = mysqli_query($conexao, $sql2);
+                    }else{
+                        $sql2 = "DELETE FROM tarefas_todo where tarefa_id = $tarefa_id";
+                        $query2 = mysqli_query($conexao, $sql2);
+                    }
+                    
                     if($query2){
                         echo json_encode(array(
                             'erro' => false,
