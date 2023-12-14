@@ -18,6 +18,16 @@ function getId(){
 	}
 }
 
+function verifyIsset(){
+	require 'src/conexao.php';
+	$task_id = $_GET['id'];
+	$sql = "select * from contestacoes where task_id = $task_id";
+	$query = mysqli_query($conexao, $sql);
+	if(mysqli_num_rows($query) == 1){
+		LocationIndex();
+	}
+}
+
 $idGet = getId();
 
 $sql = "SELECT tc.tarefa_id, tc.usuario_tarefa, tc.titulo, tc.data_criada, tc.data_final,
@@ -40,6 +50,8 @@ if(mysqli_num_rows($query) > 0){
 	LocationIndex();
 }
 
+
+verifyIsset();
 
 ?>
 <!doctype html>
