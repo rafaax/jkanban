@@ -173,18 +173,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             // print_r($next_task); 
 
                             if(empty($next_task)){ // validar se o array é vazio 
-                                // echo 'array esta vazio';
                                 $sql = "UPDATE tarefas_criadas set json_ref = null where tarefa_id = '$json->task_id'"; // COLOCAR NULO
                                 $query = mysqli_query($conexao, $sql); // RODA A QUERY
 
                                 file_put_contents($jsonRef, json_encode($next_task));
                                 unlink($jsonRef);
-                                // $created = buscaCriador($json->task_id); // 
-                                // curlEmail($json->task_id, $created, $usuarioSession);
                             }else{ // caso nao for, reindexar o array
                                 $tasks = array_values($next_task);
-                                echo 'array atualizado';
-                                // print_r($tasks); 
+                                // // print_r($tasks); 
                                 file_put_contents($jsonRef, json_encode($tasks));
                             }
 
