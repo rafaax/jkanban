@@ -136,6 +136,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if($query){
                 if($json->target == 'tarefas_done'){ // executar se o usuario enviar a tarefa para as tarefas finalizadas
                     if(validaJsonRef($json->task_id) != true){
+                        
+                        $created = buscaCriador($json->task_id);
+                        curlEmail($json->task_id, $created, $usuarioSession);
 
                         $sql = "SELECT json_ref from tarefas_criadas where tarefa_id = $json->task_id"; // query pra pegar o caminho do json
                         $query = mysqli_query($conexao, $sql);
