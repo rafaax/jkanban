@@ -122,7 +122,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             // echo $sql;
                             $query = mysqli_query($conexao, $sql);
                             if($query){
-                                echo 'query executada';
+                                
                                 $last_inserted_id = mysqli_insert_id($conexao);
                                 $sql = "INSERT INTO tarefas_todo(tarefa_id) values ('$last_inserted_id')";
                                 $query = mysqli_query($conexao, $sql);
@@ -138,6 +138,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                 $query = mysqli_query($conexao, $sql); // RODA A QUERY
 
                                 file_put_contents($jsonRef, json_encode($next_task));
+                                unlink($jsonRef);
                                 // $created = buscaCriador($json->task_id); // 
                                 // curlEmail($json->task_id, $created, $usuarioSession);
                             }else{ // caso nao for, reindexar o array
