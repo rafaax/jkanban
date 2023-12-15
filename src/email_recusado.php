@@ -2,28 +2,10 @@
 
 require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-date_default_timezone_set('America/Sao_Paulo');
-
-function buscaNomeCriador($id){
-    require 'conexao.php';
-
-    $sql = "SELECT * from usuarios where id = $id";
-    $query = mysqli_query($conexao, $sql);
-    $array = mysqli_fetch_array($query);
-
-    return $array['nome'] . ' ' . $array['sobrenome'];
-
-}
-
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    require 'chaves.php';
-    
-    include_once 'conexao.php';
+    require 'chaves.php'; require 'conexao.php';
 
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
@@ -66,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $mail->Port = $portsmtp;
     $mail->SMTPOptions = $smtpoptions;
 
-    
+
 
     $mail->addCC($email);
     $mail->setFrom('vetorian@vetorian.com');
@@ -77,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $sql = "SELECT html from email_template where tipo = 'TAREFA_RECUSADA'";
     $query = mysqli_query($conexao, $sql);
     $array = mysqli_fetch_assoc($query);
-    $body = $array['html']; // pegando o template do email
+    $body = $array['html'];
 
     $arrayHtml = array(
         "%user%" => $nome_usuario,
@@ -89,11 +71,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $mail->Body = strtr($body,$arrayHtml);
 
-    if(!$mail->send()) {
-        echo 'Não foi possível enviar a mensagem.<br>';
-        echo 'Erro: ' . $mail->ErrorInfo;
-    } else {
-        echo 'Mensagem enviada.';
+    if(!$mail->send()) { 
+        echo $mail->ErrorInfo;
     }
     
 }

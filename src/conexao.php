@@ -1,1 +1,1 @@
-<?php $conexao = mysqli_connect('localhost', 'root', '', 'engeline_kanban'); ?>
+<?php $conexao = mysqli_connect('localhost', 'root', '', 'engeline_kanban'); date_default_timezone_set('America/Sao_Paulo');?>
