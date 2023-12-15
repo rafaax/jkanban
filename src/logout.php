@@ -7,7 +7,7 @@ $query = mysqli_query($conexao, $sql);
 
 if($query){
     session_destroy();
-    unset($_COOKIE['auth_token']);
-    setcookie('auth_token', null, -1, '/');
+    unset($_COOKIE['auth_token2']);
+    setcookie('auth_token2', null, -1, '/');
     header("Location: ../login");
 }
