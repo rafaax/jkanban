@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $query = mysqli_query($conexao, $sql);
                 if($query){
                     if($usuario != null){
-                        $sql2 = "UPDATE tarefas_criadas set usuario_tarefa = $usuario";
+                        $sql2 = "UPDATE tarefas_criadas set usuario_tarefa = $usuario where tarefa_id = $tarefa_id";
                         $query2 = mysqli_query($conexao, $sql2);
                     }else{
                         $sql2 = "DELETE FROM tarefas_todo where tarefa_id = $tarefa_id";

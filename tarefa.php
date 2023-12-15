@@ -39,7 +39,7 @@ $query = mysqli_query($conexao, $sql);
 if(mysqli_num_rows($query) > 0){
 	$array = mysqli_fetch_array($query);
 	if($array['usuario_tarefa'] !== $usuarioSession){
-		exit();
+		LocationIndex();
 	}
 	$titulo_tarefa = $array['titulo'];
 	$prioridade = $array['prioridade'];
