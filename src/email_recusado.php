@@ -34,20 +34,27 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
-    print_r($client_data);
+    // print_r($client_data);
     $tarefa_id = $json->tarefa_id;
     $user = $json->user;
     $msg = $json->msg;
-    // $tarefa=  $json->tarefa;
-    // $ptc = $json->ptc;
-    // $descricao = $json->descricao;
-    // $prioridade = $json->prioridade;
-    // $criador = $json->criador;
-    // $usuario = $json->usuario;
-    // $data_criada = $json->data_criada;
-    // $data_final = $json->data_final;
 
+    $sql = "select * from usuarios where id = $user limit 1";
+    $query = mysqli_query($conexao, $sql);
+    $array = mysqli_fetch_array($query);
+    
+    $nome_usuario = $array['nome'] . ' ' . $array['sobrenome'];
 
+    $sql2 = "select * from tarefas_criadas where tarefa_id = $tarefa_id limit 1";
+    $query2 = mysqli_query($conexao, $sql2);
+    $array2 = mysqli_fetch_array($query2);
+    
+    $nome_tarefa = $array2['titulo'];
+    $ptc_tarefa = $array2['ptc_num'];
+
+    $datenow = date('d/m/Y H:i:s');
+    echo $datenow;
+     
     // $mail = new PHPMailer();
     // $mail->CharSet = "UTF-8";
     // $mail->SMTPDebug = 0;
