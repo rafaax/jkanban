@@ -5,6 +5,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+date_default_timezone_set('America/Sao_Paulo');
+
 function buscaNomeCriador($id){
     require 'conexao.php';
 
@@ -21,20 +23,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     require 'chaves.php';
     
-    // file_put_contents('logemail.txt', file_get_contents("php://input"));
-    $smtpoptions = array(
-        'ssl' => array(
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true
-        )
-    );
-
     include_once 'conexao.php';
 
     $client_data = file_get_contents("php://input");
     $json = json_decode($client_data);
-    // print_r($client_data);
+    
+    $datenow = date('d/m/Y H:i:s');
+
     $tarefa_id = $json->tarefa_id;
     $user = $json->user;
     $msg = $json->msg;
@@ -51,72 +46,55 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
     $nome_tarefa = $array2['titulo'];
     $ptc_tarefa = $array2['ptc_num'];
+    $criador_tarefa = $array2['criado_por'];
 
-    $datenow = date('d/m/Y H:i:s');
-    echo $datenow;
-     
-    // $mail = new PHPMailer();
-    // $mail->CharSet = "UTF-8";
-    // $mail->SMTPDebug = 0;
-    // $mail->Debugoutput = 'html';
-    // $mail->isSMTP();
-    // $mail->Host = $hostsmtp;
-    // $mail->SMTPAuth = true;
-    // $mail->Username = $usersmtp;
-    // $mail->Password = $passsmtp;
-    // $mail->SMTPSecure = 'auto';
-    // $mail->Port = $portsmtp;
-    // $mail->SMTPOptions = $smtpoptions;
+    $sql3 = "select email from usuarios where id = $criador_tarefa limit 1 ";
+    $query3 = mysqli_query($conexao, $sql3);
+    $array3 = mysqli_fetch_array($query3);
+    $email = $array3['email'];
 
-    // $sql = "SELECT * from usuarios where id = $usuario";
-    // $query = mysqli_query($conexao, $sql);
-    // $result = mysqli_fetch_assoc($query);
+    $mail = new PHPMailer();
+    $mail->CharSet = "UTF-8";
+    $mail->SMTPDebug = 0;
+    $mail->Debugoutput = 'html';
+    $mail->isSMTP();
+    $mail->Host = $hostsmtp;
+    $mail->SMTPAuth = true;
+    $mail->Username = $usersmtp;
+    $mail->Password = $passsmtp;
+    $mail->SMTPSecure = 'auto';
+    $mail->Port = $portsmtp;
+    $mail->SMTPOptions = $smtpoptions;
 
-    // $cc_email = $result['email'];
-    // $nome = $result['nome'];
-    // $sobrenome = $result['sobrenome'];
-
-    // $mail->addCC($cc_email, "$nome $sobrenome");
-    // $mail->setFrom('vetorian@vetorian.com');
-    // $mail->addAddress($cc_email);
-    // $mail->isHTML(true);
-    // $mail->Subject =  'Nova Tarefa - Engedoc';
     
-    // $sql = "SELECT html from email_template where tipo = 'TAREFA_CRIADA'";
-    // $query = mysqli_query($conexao, $sql);
-    // $array = mysqli_fetch_assoc($query);
-    // $body = $array['html']; // pegando o template do email
 
+    $mail->addCC($email);
+    $mail->setFrom('vetorian@vetorian.com');
+    $mail->addAddress($email);
+    $mail->isHTML(true);
+    $mail->Subject =  'Tarefa Recusada - ' . $nome_tarefa;
+    
+    $sql = "SELECT html from email_template where tipo = 'TAREFA_RECUSADA'";
+    $query = mysqli_query($conexao, $sql);
+    $array = mysqli_fetch_assoc($query);
+    $body = $array['html']; // pegando o template do email
 
-    // $horario_cadastro = new DateTime($data_criada);
-    // $horario_final = new DateTime($data_final);
+    $arrayHtml = array(
+        "%user%" => $nome_usuario,
+        "%task%" => "$nome_tarefa - $ptc_tarefa",
+        "%content%" => $msg,
+        "%data%" => $datenow,
+        
+    );
 
-    // $horario_cadastro = $horario_cadastro->format('d/m/Y H:i:s');
-    // $horario_final = $horario_final->format('d/m/Y H:i:s');
+    $mail->Body = strtr($body,$arrayHtml);
 
-    // $criador = buscaNomeCriador($criador);
-    // $prioridade = buscaPrioridade($prioridade);
-
-
-    // $arrayHtml = array(
-    //     "%titulo%" => $tarefa,
-    //     "%prioridade%" => $prioridade,
-    //     "%ptc%" => $ptc,
-    //     "%descricao%" => $descricao,
-    //     "%criador%" => $criador,
-    //     "%data_criada%" => $horario_cadastro,
-    //     "%data_final%" => $horario_final,
-    //     "%link%" => '192.168.0.166/jkanban/tarefa.php?id=' . $tarefa_id,
-    // );
-
-    // $mail->Body = strtr($body,$arrayHtml);
-
-    // if(!$mail->send()) {
-    //     echo 'Não foi possível enviar a mensagem.<br>';
-    //     echo 'Erro: ' . $mail->ErrorInfo;
-    // } else {
-    //     echo 'Mensagem enviada.';
-    // }
+    if(!$mail->send()) {
+        echo 'Não foi possível enviar a mensagem.<br>';
+        echo 'Erro: ' . $mail->ErrorInfo;
+    } else {
+        echo 'Mensagem enviada.';
+    }
     
 }
 
