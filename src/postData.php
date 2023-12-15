@@ -24,6 +24,7 @@ function validaRegistro($task, $source){
     }
 }
 
+
 function validaJsonRef($task){
     require 'conexao.php';
     
@@ -38,6 +39,7 @@ function validaJsonRef($task){
     }
 }
 
+
 function buscaCriador($task_id){
     require 'conexao.php';
     $sql = "SELECT * from tarefas_criadas where tarefa_id = '$task_id'";
@@ -45,6 +47,7 @@ function buscaCriador($task_id){
     $array = mysqli_fetch_array($query);
     return $array['criado_por'];
 }
+
 
 function curlEmail($task,$created_by, $user ){
     $arrayPost = array(
@@ -71,7 +74,6 @@ function curlEmail($task,$created_by, $user ){
 }
 
 
-
 function logDragging($user, $task, $target, $source ){
     require 'conexao.php';
 
@@ -79,6 +81,44 @@ function logDragging($user, $task, $target, $source ){
     mysqli_query($conexao, $sql);
     
 }
+
+
+function curlEmailCadastro($task_id){
+    require 'conexao.php';
+
+    $sql = "SELECT * from tarefas_criadas where tarefa_id = $task_id";
+    $query = mysqli_query($conexao, $sql);
+    
+    $array = mysqli_fetch_array($query);
+
+    $arrayPost = array(
+        'tarefa_id' => $task_id,
+        'tarefa' => $array['titulo'],
+        'ptc' => $array['ptc_num'],
+        'descricao' => $array['descricao_tarefa'],
+        'prioridade' => $array['prioridade'],
+        'criador' => $array['criado_por'],
+        'usuario' => $array['usuario_tarefa'],
+        'data_criada' => $array['data_criada'],
+        'data_final' => $array['data_final']
+    );
+
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://127.0.0.1/jkanban/src/email_cadastro.php',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($arrayPost),
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+        ),
+    ));
+
+    $ch = curl_exec($curl);
+    // echo $ch;
+    curl_close($curl);
+}
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     require 'conexao.php';
@@ -122,10 +162,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             // echo $sql;
                             $query = mysqli_query($conexao, $sql);
                             if($query){
-                                
                                 $last_inserted_id = mysqli_insert_id($conexao);
                                 $sql = "INSERT INTO tarefas_todo(tarefa_id) values ('$last_inserted_id')";
                                 $query = mysqli_query($conexao, $sql);
+                                curlEmailCadastro($last_inserted_id);
                             }
 
 
@@ -133,7 +173,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             // print_r($next_task); 
 
                             if(empty($next_task)){ // validar se o array é vazio 
-                                echo 'array esta vazio';
+                                // echo 'array esta vazio';
                                 $sql = "UPDATE tarefas_criadas set json_ref = null where tarefa_id = '$json->task_id'"; // COLOCAR NULO
                                 $query = mysqli_query($conexao, $sql); // RODA A QUERY
 

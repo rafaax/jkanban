@@ -78,11 +78,11 @@ function buscaNomeKanban($user){
         <header> 
           <h3>Visualizando o kanban de: '. buscaNomeKanban($_GET['id']).'</h3>
         </header>';
-        echo '<div style="position: absolute; bottom: 0.8%; right:6%;">
+        ?>
+        <div style="position: absolute; bottom: 19%; right:2%;">
           <a href="index"><img class="logout" src="assets/imgs/home.png"></img></a>
-        </div>';
-      }
-      ?>
+        </div>;
+      <?php } ?>
       
       <div style="display: flex;">
         <div id="myKanban"></div>
