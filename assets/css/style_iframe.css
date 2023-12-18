@@ -11,13 +11,24 @@
 }
 
 
+@keyframes vertical-shaking {
+    0% { transform: translateY(0) }
+    25% { transform: translateY(5px) }
+    50% { transform: translateY(-5px) }
+    75% { transform: translateY(5px) }
+    100% { transform: translateY(0) }
+}
+
+
 body{
     font-family: 'Montserrat', sans-serif;
     background-color: transparent;
 } 
 
 .rise-shake {
-  animation: jump-shaking 1.5s infinite;
+  animation: jump-shaking;
+  animation-duration: 1.5s;
+  /* animation-delay: 5s; */
 }
 
 /* Estilos padrão para ícones */
