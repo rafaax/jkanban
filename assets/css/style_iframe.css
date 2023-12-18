@@ -26,8 +26,9 @@ body{
 } 
 
 .rise-shake {
-  animation: jump-shaking;
+  animation: vertical-shaking;
   animation-duration: 1.5s;
+  animation-iteration-count: infinite;
   /* animation-delay: 5s; */
 }
 
