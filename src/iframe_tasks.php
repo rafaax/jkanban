@@ -52,7 +52,7 @@ $sql = "SELECT tc.tarefa_id, tc.titulo, tc.descricao_tarefa, tc.criado_por, tc.u
 
 $query = mysqli_query($conexao,$sql);
 ?>
-<div class="col-md-2">
+<div class="col-md-4">
     <div class="mt-2">
         <ul class="list list-inline">
 <?php

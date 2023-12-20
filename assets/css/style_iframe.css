@@ -78,9 +78,9 @@ body{
     margin-left: 3px;
 }
 
-/* Media query para ajustar estilos em telas menores */
-@media only screen and (max-width: 768px) {
-    /* Adicione estilos específicos para telas menores aqui */
+
+@media only screen and (max-width: 800px) {
+    
     .list li {
         padding: 8px;
         font-size: 14px;
@@ -96,3 +96,4 @@ body{
         margin-left: 0;
     }
 }
+

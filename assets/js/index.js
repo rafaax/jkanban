@@ -88,6 +88,10 @@ $(document).ready(function(){
         window.location.href = "index?cadastro";
     });
 
+    $('#tela-acompanhamento').on("click", function(){
+        window.location.href = "index?acompanhamento";
+    });
+
     function validaJson(user){
         $.ajax({
         type: "GET",
@@ -272,27 +276,40 @@ $(document).ready(function(){
     }
 
     
-    
+    function load_acompanhamento(){
+
+        $.ajax({
+            url:"src/acompanhamento.php",
+            method:"post",
+            success:function(data){
+                $('#acompanhamento').html(data);
+            }
+        });
+    }
+
 
     function load_cadastro(query){
+
         $.ajax({
-        url:"src/cadastro_task.php",
-        method:"post",
-        success:function(data){
-            $('#cadastro_task_pd').html(data);
-        }
+            url:"src/cadastro_task.php",
+            method:"post",
+            success:function(data){
+                $('#cadastro_task_pd').html(data);
+            }
         });
     }
 
   
     function load_cadastro_sequencial(query){
+
         $.ajax({
-        url:"src/cadastro_task_sequenciada.php",
-        method:"post",
-        success:function(data){
-            $('#cadastro_task_sq').html(data);
-        }
+            url:"src/cadastro_task_sequenciada.php",
+            method:"post",
+            success:function(data){
+                $('#cadastro_task_sq').html(data);
+            }
         });
+        
     }
 
      
@@ -389,6 +406,9 @@ $(document).ready(function(){
             load_cadastro();
         } else if (window.location.search.includes('cadastro') && url.get('cadastro') === 'sequencial') {
             load_cadastro_sequencial();
+        } else if(window.location.search.includes('acompanhamento')){
+            alert('oi');
+            load_acompanhamento();
         }
     }
 

@@ -66,8 +66,10 @@ function buscaNomeKanban($user){
         
         <?php  
       }else{
-        header('Location: ?id='. $usuarioSession);
+        // header('Location: ?id='. $usuarioSession);
       }
+    }else if(isset($_GET['acompanhamento'])){
+      echo '<div id="acompanhamento"></div>'; 
     }else if(!isset($_GET['id'])){
       header('Location: ?id='. $usuarioSession);
     }else if(isset($_GET['id'])){
@@ -86,7 +88,7 @@ function buscaNomeKanban($user){
       
       <div style="display: flex;">
         <div id="myKanban"></div>
-        <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" width="100%" height="700"></iframe>
+        <iframe src="src/iframe_tasks.php?id=<?=$_GET['id']?>" style="flex: 2; width: 100%; border: none;"></iframe>
       </div>
       
       <div style="position: absolute; bottom: 0.8%; right:1.6%;">
@@ -97,9 +99,14 @@ function buscaNomeKanban($user){
       </div>
       <?php if($permissoesSession == 1){
         echo '<span class="button" id="adicionar-tarefa">Adicione uma tarefa!</span>';
+        
+        echo '<div style="">
+          <span id="tela-acompanhamento" class="button">ACOMPANHAR PTCS</span>
+        </div>';
         echo '<div style="padding-bottom: 50px;">
           <span id="filtrar-usuario" class="button">Visualizar outros KANBANS</span>
         </div>';
+        
       }?>
 
       
