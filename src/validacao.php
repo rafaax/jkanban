@@ -4,7 +4,7 @@ session_start();
 
 include_once 'conexao.php';
 if ($_SESSION["usuario"] == "" || $_SESSION["usuario"] == null) {
-    header("Location: http://192.168.0.166/jkanban/login.php");
+    header("Location: http://192.168.0.122/jkanban/login.php");
 }
 
 $usuarioLogado = $_SESSION["usuario"];

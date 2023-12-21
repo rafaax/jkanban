@@ -105,7 +105,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         "%criador%" => $criador,
         "%data_criada%" => $horario_cadastro,
         "%data_final%" => $horario_final,
-        "%link%" => '192.168.0.166/jkanban/tarefa.php?id=' . $tarefa_id,
+        "%link%" => '192.168.0.122/jkanban/tarefa.php?id=' . $tarefa_id,
     );
 
     $mail->Body = strtr($body,$arrayHtml);
