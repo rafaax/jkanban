@@ -277,7 +277,7 @@ $(document).ready(function(){
 
     
     function load_acompanhamento(){
-
+        
         $.ajax({
             url:"src/acompanhamento.php",
             method:"post",
@@ -407,7 +407,6 @@ $(document).ready(function(){
         } else if (window.location.search.includes('cadastro') && url.get('cadastro') === 'sequencial') {
             load_cadastro_sequencial();
         } else if(window.location.search.includes('acompanhamento')){
-            alert('oi');
             load_acompanhamento();
         }
     }
